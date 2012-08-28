@@ -1,0 +1,20 @@
+{
+	"name": "bifocals",
+	"version": "1.0.0",
+	"author": {
+		"name": "Aaron Hedges",
+		"email": "aaron@dashron.com",
+		"url": "www.dashron.com"
+	},
+	"description": "A node.js view built to organize asynchronous sub views on top of any rendering engine",
+	"keywords": ["view", "asynchronous", "subview"],
+	"homepage": "github.com.com/Dashron/bifocals",
+	"bugs": { 
+		"url" : "http://github.com/Dashron/bifocals/issues", 
+		"email" : "aaron@dashron.com"
+	},
+	"repository" : { 
+		"type" : "git",
+		 "url" : "git://github.com/Dashron/bifocals.git"
+	}
+}
