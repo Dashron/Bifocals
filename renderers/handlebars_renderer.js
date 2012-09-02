@@ -50,7 +50,9 @@ HandlebarsRenderer.prototype.render = function (template) {
 			_self._error(err);
 		});
 	} else {
-		this.executeTemplate(template);
+		process.nextTick(function () {
+			_self.executeTemplate(template);
+		})
 	}
 };
 
