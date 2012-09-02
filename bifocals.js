@@ -95,7 +95,10 @@ Bifocals.prototype._child_views = null;
 
 /**
  * The response object that the renderer will write to
- * 
+ * Changing this will alter how render is performed.
+ * It is not recommended to change this on child views, only parent views.
+ * Child views use an object with some functions matching ServerResponse, but it is not a ServerResponse.
+ * Only the root element should have a ServerResponse
  * @type {ServerResponse|Object}
  */
 Bifocals.prototype.response = null;
@@ -111,30 +114,35 @@ Bifocals.prototype._error = function (error) {
 
 /**
  * The content type (or mime type) of the response. This is used to locate the proper renderer, and sent via headers to the client
+ * Changing this will change the object used to render the final output
  * @type {String}
  */
 Bifocals.prototype.content_type = null;
 
 /**
  * The template that the view should render when complete. This is provided to the renderer along with the dir.
+ * Changing this will override any previously assigned templates, and will be counted as an override for any template provided to a render call.
  * @type {String}
  */
 Bifocals.prototype.template = null;
 
 /**
  * The default directory that this view should use to locate templates
+ * Changing this changes which directory templates will be loaded from when the view is done rendering
  * @type {String}
  */
 Bifocals.prototype.dir = null;
 
 /**
- * The Bifocal view that created this view as a child
+ * The Bifocal view that created this view as a child.
+ * Changing this will alter what happens when a child element finishes rendering. On success, a child element attempts to render it's parent element.
  * @type {Bifocal}
  */
 Bifocals.prototype.parent = null;
 
 /**
  * The root Bifocal view in the chain of parent child views (aka the original view)
+ * Changing this will alter what view this child will send status codes and headers too.
  * @type {Bifocal}
  */
 Bifocals.prototype.root = null;
