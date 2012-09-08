@@ -35,7 +35,7 @@ http_module.createServer(function (request, response) {
 		view.set('name', 'Aaron Hedges');
 		view.set('date', new Date());
 
-		// Create a child view. It's contents will be assigned to the parent element with the key "first_child"
+		// Create a child view. It's contents will be assigned to the parent element with the key "first_child". Make sure this is called before the root's render function is called, otherwise the view won't know it needs to wait for a child.
 		var first_child = view.child('first_child');
 		// Tell the child to start rendering, and use the template "sub1.html", located within the parent view's default directory
 		first_child.render('sub1.html');

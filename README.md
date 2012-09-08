@@ -24,20 +24,23 @@ templates/header.html
 
 Create the parent:
 
-    var template = new Bifocals("templates/index.html");
+    var template = new Bifocals();
     template.response = response;
 
 Create the child:
 
-    var child = template.child("header", "templates/header.html");
+    var child = template.child("header");
     child.set('title, "Hello World");
-    child.render();
+    child.render("templates/header.html");
 
 Write the view to the response
 
-    template.render();
+    template.render("templates/index.html");
 
 And you are done!
+
+You can also render sub views after you request the root view to be rendered. The root view will wait until the child view has finished.
+
 
 ----
 
