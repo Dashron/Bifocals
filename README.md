@@ -52,7 +52,8 @@ More comming. For the moment, the code itself is fairly well documented
 
 ### Writing your own Renderers
 
-You must extend the renderer class 
+You must extend the renderer class
+
     var FileRenderer = module.exports = function FileRenderer() {
         Renderer.call(this);
     }
@@ -67,20 +68,21 @@ Write should be called any time data is complete, and ready to be sent to the us
 
 Additionally each renderer will have an "_error" function. This function will be provided with the view's error handler, it should be called any time an error occurs.
 
-FileRenderer.prototype.render = function (template) {
-	var _self = this;
-	var stream = fs_module.createReadStream(template);
-	stream.on('data', function (data) {
-		_self.response.write(data);
-	});
 
-	stream.on('error', function (err) {
-		_self._error(err);
-	});
+    FileRenderer.prototype.render = function (template) {
+	    var _self = this;
+	    var stream = fs_module.createReadStream(template);
+	    stream.on('data', function (data) {
+    	    _self.response.write(data);
+        });
 
-	stream.on('end', function () {
-		_self.response.end();
-	});
+    stream.on('error', function (err) {
+        _self._error(err);
+    });
+
+    stream.on('end', function () {
+        _self.response.end();
+    });
 }
 
 ----
