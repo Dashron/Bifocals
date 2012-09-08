@@ -23,9 +23,9 @@ templates/header.html
 
 
 Create the parent:
-
-    var template = new Bifocals();
-    template.response = response;
+    http_module.createServer(function (request, response) {
+        var template = new Bifocals();
+        template.response = response;
 
 Create the child:
 
@@ -37,16 +37,26 @@ Write the view to the response
 
     template.render("templates/index.html");
 
-And you are done!
+And you are done! When the client requests this page, it will recieve the following html
 
-You can also render sub views after you request the root view to be rendered. The root view will wait until the child view has finished.
+    <html>
+        <head></head>
+        <body>
+            <header>
+                Hello World
+            </header>
+        </body>
+    </html>
+
+
+The order that you render parent or child views is unimportant. You must create all children before you tell the parent to render, otherwise it might render an incomplete template.
 
 
 ----
 
 ### Function Reference
 
-More comming. For the moment, the code itself is fairly well documented
+More comming. For the moment, the code itself is fairly well documented.
 
 ----
 
