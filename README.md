@@ -3,7 +3,7 @@
 
 A View library with support for asynchronous sub-views (aka partials), and interchangable rendering systems.
 
-## Basic Use:
+### Basic Use:
 templates/index.html
     <html>
         <head></head>
@@ -31,15 +31,16 @@ Write the view to the response
     template.render();
 
 And you are done!
+
 ----
 
-## Function Reference
+### Function Reference
 
 More comming. For the moment, the code itself is fairly well documented
 
 ----
 
-## Writing your own Renderers
+### Writing your own Renderers
 
 You must extend the renderer class 
     var FileRenderer = module.exports = function FileRenderer() {
@@ -71,8 +72,10 @@ FileRenderer.prototype.render = function (template) {
 		_self.response.end();
 	});
 }
+
 ----
-## Coding Standards:
+
+### Coding Standards:
 ================
 If a object property is prefixed with an underscore (_) IGNORE IT. Changing it is not supported, and has not been considered in the development of the library.
 
