@@ -7,17 +7,17 @@ A View library with support for asynchronous sub-views (aka partials), and inter
 
 ### Basic Use:
 templates/index.html
-    <html>
-        <head></head>
-        <body>
+    &lt;html&gt;
+        &lt;head&gt;&lt;/head&gt;
+        &lt;body&gt;
             {{{header}}}
-        </body>
-    </html>
+        &lt;/body&gt;
+    &lt;/html&gt;
 
 templates/header.html
-    <header>
+    &lt;header&gt;
         {{title}}
-    </header>
+    &lt;/header&gt;
 
 
 Create the parent:
