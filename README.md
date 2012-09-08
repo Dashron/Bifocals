@@ -7,6 +7,7 @@ A View library with support for asynchronous sub-views (aka partials), and inter
 
 ### Basic Use:
 templates/index.html
+
     &lt;html&gt;
         &lt;head&gt;&lt;/head&gt;
         &lt;body&gt;
@@ -15,21 +16,25 @@ templates/index.html
     &lt;/html&gt;
 
 templates/header.html
+
     &lt;header&gt;
         {{title}}
     &lt;/header&gt;
 
 
 Create the parent:
+
     var template = new Bifocals("templates/index.html");
     template.response = response;
 
 Create the child:
+
     var child = template.child("header", "templates/header.html");
     child.set('title, "Hello World");
     child.render();
 
 Write the view to the response
+
     template.render();
 
 And you are done!
