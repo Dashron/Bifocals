@@ -12,14 +12,16 @@ var config = {
 };
 
 http_module.createServer(function (request, response) {
-	// Create a view object based on global config, and the response object.
-	// Ideally this would be abstracted away by whatever system you use the views.
+	// Create the view
 	var view = new View();
+	// Assign a default directory
 	view.dir = config.template_dir;
+	// Assign the ServerResponse object to the root view
 	view.response = response;
 
 	// If an error happens, throw the right status code!
-	// Because this is an example, I do not render an error template. (if the error template fails, it can get stuck in a loop)
+	// Because this is an example, I do not render an error template. 
+	// Be careful when you are first building your app, if you provide a template to statusErorr, and that template fails, you will be stuck in an infinite loop.
 	view.error(function (error) {
 		console.log(error);
 		view.statusError(error);
@@ -33,21 +35,24 @@ http_module.createServer(function (request, response) {
 		view.set('name', 'Aaron Hedges');
 		view.set('date', new Date());
 
-		// Create a child view that will render sub1
+		// Create a child view. It's contents will be assigned to the parent element with the key "first_child"
 		var first_child = view.child('first_child');
+		// Tell the child to start rendering, and use the template "sub1.html", located within the parent view's default directory
 		first_child.render('sub1.html');
 
-		// Create a child view that will render sub2. 
-		// The child definition overrides the final render call, so that you don't have to know whether the template is a parent or child element
+		// Create a child view that will render sub2. It's contents will be assigned to the parent element with the key "second_child". It will use sub2.html as it's template unless one is manually assigned later in the code via the template property.
 		var second_child = view.child('second_child', 'sub2.html');
+		// "sub2.html" will override the render methods "sub1.html", This allows you to reuse code between different templates
 		second_child.render('sub1.html');
 
 		// Create a child view which will render some time in the future 
 		var third_child = view.child('third_child');
 		process.nextTick(function () {
+			// We have made it to some time in the future, render "sub3.html". By this point, the parent has already tried to render, but failed because the third child is not complete. Now that we call render, the parent can wrap up it's duties.
 			third_child.render('sub3.html');
 		});
 		
+		// Render the parent view. First and second child may or may not be done, but we definitely know that third child has not even started. This will tell the parent that it's ready, and wait for all the children to be complete.
 		view.render('index.html');
 	} else if (request.url === "/static/") {
 		// Render a static file (this could also be css or js if the renderer supported that)
