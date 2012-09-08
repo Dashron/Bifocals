@@ -99,12 +99,14 @@ Bifocals.prototype._child_views = null;
  * It is not recommended to change this on child views, only parent views.
  * Child views use an object with some functions matching ServerResponse, but it is not a ServerResponse.
  * Only the root element should have a ServerResponse
+ * 
  * @type {ServerResponse|Object}
  */
 Bifocals.prototype.response = null;
 
 /**
  * Error handler, any time an error occurs it will be provided to this function. Can be overriden via Bifocals.error(fn);
+ * 
  * @param  {Error} error
  */
 Bifocals.prototype._error = function (error) {
@@ -115,6 +117,7 @@ Bifocals.prototype._error = function (error) {
 /**
  * The content type (or mime type) of the response. This is used to locate the proper renderer, and sent via headers to the client
  * Changing this will change the object used to render the final output
+ * 
  * @type {String}
  */
 Bifocals.prototype.content_type = null;
@@ -122,6 +125,7 @@ Bifocals.prototype.content_type = null;
 /**
  * The template that the view should render when complete. This is provided to the renderer along with the dir.
  * Changing this will override any previously assigned templates, and will be counted as an override for any template provided to a render call.
+ * 
  * @type {String}
  */
 Bifocals.prototype.template = null;
@@ -129,6 +133,7 @@ Bifocals.prototype.template = null;
 /**
  * The default directory that this view should use to locate templates
  * Changing this changes which directory templates will be loaded from when the view is done rendering
+ * 
  * @type {String}
  */
 Bifocals.prototype.dir = null;
@@ -136,6 +141,7 @@ Bifocals.prototype.dir = null;
 /**
  * The Bifocal view that created this view as a child.
  * Changing this will alter what happens when a child element finishes rendering. On success, a child element attempts to render it's parent element.
+ * 
  * @type {Bifocal}
  */
 Bifocals.prototype.parent = null;
@@ -143,12 +149,14 @@ Bifocals.prototype.parent = null;
 /**
  * The root Bifocal view in the chain of parent child views (aka the original view)
  * Changing this will alter what view this child will send status codes and headers too.
+ * 
  * @type {Bifocal}
  */
 Bifocals.prototype.root = null;
 
 /**
  * returns whether the view has finished rendering or not
+ * 
  * @returns {Boolean}
  */
 Bifocals.prototype.isRendered = function view_isRendered() {
@@ -157,6 +165,7 @@ Bifocals.prototype.isRendered = function view_isRendered() {
 
 /**
  * Sets data to be rendered to the view
+ * 
  * @param {String} key
  * @param {mixed} value
  * @return {Bifocals} this, used for chaining
@@ -168,6 +177,7 @@ Bifocals.prototype.set = function view_set(key, value) {
 
 /**
  * Retrieves all of the data so that it can be rendered by a parent
+ * 
  * @param {String} key
  * @return {Mixed|Object}
  */
@@ -180,6 +190,7 @@ Bifocals.prototype.get = function view_get(key) {
 
 /**
  * If the view is ready to be rendered, this will be true, otherwise false
+ * 
  * @returns {Boolean}
  */
 Bifocals.prototype.canRender = function view_canRender() {
@@ -213,6 +224,7 @@ Bifocals.prototype.canRender = function view_canRender() {
 
 /**
  * Renders the current view, writing the the response, if and only if all child views have been completed
+ * 
  * @param {String} template Renders the provided template unless one was set previously.
  * @param {Boolean} force Kills all child elements and forces the template to be rendered immediately. default: false
  */
@@ -262,6 +274,7 @@ Bifocals.prototype.cancelRender = function () {
 
 /**
  * Builds a Renderer with all necessary data pulled from the view
+ * 
  * @return {Renderer}
  */
 Bifocals.prototype.buildRenderer = function view_buildRenderer() {
