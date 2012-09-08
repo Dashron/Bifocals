@@ -25,18 +25,18 @@ templates/header.html
 Create the parent:
 
     http_module.createServer(function (request, response) {
-        var template = new Bifocals();
-        template.response = response;
+        var view = new Bifocals();
+        view.response = response;
 
 Create the child:
 
-    var child = template.child("header");
+    var child = view.child("header");
     child.set('title, "Hello World");
     child.render("templates/header.html");
 
 Write the view to the response
 
-    template.render("templates/index.html");
+    view.render("templates/index.html");
 
 And you are done! When the client requests this page, it will recieve the following html
 
