@@ -3,6 +3,8 @@
 
 A View library with support for asynchronous sub-views (aka partials), and interchangable rendering systems.
 
+----
+
 ### Basic Use:
 templates/index.html
     <html>
