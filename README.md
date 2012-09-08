@@ -82,19 +82,24 @@ Additionally each renderer will have an "_error" function. This function will be
 
     FileRenderer.prototype.render = function (template) {
 	    var _self = this;
+	    // Find the template and load it from disk
 	    var stream = fs_module.createReadStream(template);
+	    
 	    stream.on('data', function (data) {
+	    	// Write data to the response
     	    _self.response.write(data);
         });
 
-    stream.on('error', function (err) {
-        _self._error(err);
-    });
+        stream.on('error', function (err) {
+        	// Call the renderer's error function
+            _self._error(err);
+        });
 
-    stream.on('end', function () {
-        _self.response.end();
-    });
-}
+        stream.on('end', function () {
+        	// Signal the end of rendering
+            _self.response.end();
+        });
+    }
 
 ----
 
