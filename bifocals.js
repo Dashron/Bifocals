@@ -63,15 +63,15 @@ var render_states = exports.RENDER_STATES = {
  * 
  * 
  * //Create the parent:
- * var template = new Bifocals("templates/index.html");
- * template.response = response;
+ * var view = new Bifocals("templates/index.html");
+ * view.response = response;
  * 
  * //Create the child:
  * var child = template.child("header", "templates/header.html");
  * child.set('title, "Hello World");
  * 
  * //Write the view to the response
- * template.render();
+ * view.render();
  * 
  * //And you are done! You don't have to tell the child views to render, that is all handled for you.
  * 
