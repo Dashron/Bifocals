@@ -3,6 +3,19 @@
 
 A View library with support for asynchronous sub-views (aka partials), and interchangeable rendering systems.
 
+## Table of Contents
+
+* [Basic Use](#basic-use)
+  * [Why do I need this library?](#why-do-i-need-this-library)
+  * [Important Notes](#important-notes)
+* [Writing your own Renderer](#writing-your-own-renderer)
+* [Function Reference](#function-reference)
+  * [Module Reference](#module-reference)
+  * [Bifocals Reference](#bifocals-reference)
+  * [Renderer Reference](#renderer-reference)
+* [Coding Standards](#coding-standards)
+* [Future Features](#future-features)
+
 ----
 
 ### Basic Use:
