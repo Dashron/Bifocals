@@ -32,11 +32,10 @@
       <section>
         <h1>Bifocals</h1>
 
-<h1></h1>
 
 <p>A View library with support for asynchronous sub-views (aka partials), and interchangeable rendering systems.</p>
 
-<hr><h3>Basic Use:</h3>
+<h3>Basic Use:</h3>
 
 <p>templates/index.html</p>
 
@@ -153,7 +152,9 @@ http_module.createServer(function (request, response) {
 <li>You must register a Renderer to any content type you wish to use.</li>
 <li>The order that you render parent or child views is unimportant.</li>
 <li>You must create all children before you tell the parent to render, otherwise the output template could be incomplete.</li>
-</ul><hr><h3>Writing your own Renderer</h3>
+</ul>
+
+<h3>Writing your own Renderer</h3>
 
 <p>You must extend the renderer class</p>
 
@@ -194,9 +195,9 @@ util_module.inherits(FileRenderer, Renderer);
 }
 </code></pre>
 
-<hr><h3>Function Reference</h3>
+<h3>Function Reference</h3>
 
-<hr><h4>Module Reference</h4>
+<h4>Module Reference</h4>
 
 <h5>addRenderer(content_type, renderer)</h5>
 
