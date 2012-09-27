@@ -59,7 +59,7 @@
 </li>
 <li><a href="#coding-standards">Coding Standards</a></li>
 <li><a href="#future-features">Future Features</a></li>
-</ul><hr><h3>Basic Use:</h3>
+</ul><h3 id="basic-use">Basic Use:</h3>
 
 <p>templates/index.html</p>
 
@@ -114,7 +114,7 @@ http_module.createServer(function (request, response) {
 &lt;/html&gt;
 </code></pre>
 
-<h3>Why do I need this library?</h3>
+<h3 id="why-do-i-need-this-library">Why do I need this library?</h3>
 
 <p>The previous example does not show the benefits of the library. The benefits come when performing asynchronous actions. It might be easier to explain with a more complex example.</p>
 
@@ -170,13 +170,13 @@ http_module.createServer(function (request, response) {
 }
 </code></pre>
 
-<h3>Important Notes</h3>
+<h3 id="important-notes">Important Notes</h3>
 
 <ul>
 <li>You must register a Renderer to any content type you wish to use.</li>
 <li>The order that you render parent or child views is unimportant.</li>
 <li>You must create all children before you tell the parent to render, otherwise the output template could be incomplete.</li>
-</ul><hr><h3>Writing your own Renderer</h3>
+</ul><h3 id="writing-your-own-renderer">Writing your own Renderer</h3>
 
 <p>You must extend the renderer class</p>
 
@@ -217,9 +217,9 @@ util_module.inherits(FileRenderer, Renderer);
 }
 </code></pre>
 
-<hr><h3>Function Reference</h3>
+<h3 id="function-reference">Function Reference</h3>
 
-<hr><h4>Module Reference</h4>
+<h4 id="module-reference">Module Reference</h4>
 
 <h5>addRenderer(content_type, renderer)</h5>
 
@@ -268,7 +268,7 @@ view.error(function (error) {
     view.statusError(error);
 });</p>
 
-<hr><h4>Bifocals Reference</h4>
+<h4 id="bifocals-reference">Bifocals Reference</h4>
 
 <h5>response</h5>
 
@@ -434,7 +434,7 @@ todo: support other 300's</p>
 
 <p>Ends rendering immediately with a 405: Unsupported Method code. This should be in response to a failed request, if the request would be successful when made with an alternative http method.</p>
 
-<hr><h4>Renderer Reference</h4>
+<h4 id="renderer-reference">Renderer Reference</h4>
 
 <h5>exports.Renderer = function()</h5>
 
@@ -462,13 +462,13 @@ todo: support other 300's</p>
 
 <p>Assigns a function that will be called when the renderer is complete. The assigned function should be called via the _end property.</p>
 
-<hr><h3>Coding Standards:</h3>
+<h3 id="coding-standards">Coding Standards:</h3>
 
 <p>If a object property is prefixed with an underscore (_) IGNORE IT. Changing it is not supported, and has not been considered in the development of the library.</p>
 
 <p>If it is not prefixed with an underscore (_) and is not a function, you can change it however you see fit. Just read the documentation and understand the side effects of changing the variable.</p>
 
-<h3>Future Features:</h3>
+<h3 id="future-features">Future Features:</h3>
 
 <p>"Fill"</p>
 
