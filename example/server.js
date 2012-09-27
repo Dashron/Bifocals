@@ -6,7 +6,7 @@ var bifocals_module = require('../bifocals');
 var View = bifocals_module.Bifocals;
 
 var config = {
-	template_dir : "./templates/",
+	template_dir : __dirname + "/templates/",
 	hostname : "localhost",
 	port : "8125"
 };
@@ -23,6 +23,7 @@ http_module.createServer(function (request, response) {
 	// Because this is an example, I do not render an error template. 
 	// Be careful when you are first building your app, if you provide a template to statusError, and that template fails, you will be stuck in an infinite loop.
 	view.error(function (error) {
+		console.log('There was an error rendering your template. Take a look below and see what it says. First make sure the file path is correct');
 		console.log(error);
 		view.statusError(error);
 	});
