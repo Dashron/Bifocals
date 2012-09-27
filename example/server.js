@@ -21,7 +21,7 @@ http_module.createServer(function (request, response) {
 
 	// If an error happens, throw the right status code!
 	// Because this is an example, I do not render an error template. 
-	// Be careful when you are first building your app, if you provide a template to statusErorr, and that template fails, you will be stuck in an infinite loop.
+	// Be careful when you are first building your app, if you provide a template to statusError, and that template fails, you will be stuck in an infinite loop.
 	view.error(function (error) {
 		console.log(error);
 		view.statusError(error);
