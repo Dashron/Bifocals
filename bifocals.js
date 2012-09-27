@@ -16,7 +16,7 @@ var _renderers = {};
  * @param {string} content_type The content type (or mime type) of the request
  * @param {Renderer} renderer     The renderer object that will handle view data
  */
-exports.addRenderer = function (content_type, renderer) {
+exports.addRenderer = function addRenderer(content_type, renderer) {
 	_renderers[content_type] = renderer;
 };
 
@@ -26,7 +26,7 @@ exports.addRenderer = function (content_type, renderer) {
  * @return {Renderer}              The renderer associated with the content type
  * @throws {Error} If a renderer has not been added to the content_type
  */
-exports.getRenderer = function (content_type) {
+exports.getRenderer = function getRenderer(content_type) {
 	if (_renderers[content_type]) {
 		return _renderers[content_type];
 	} else {
@@ -40,7 +40,7 @@ var render_states = exports.RENDER_STATES = {
 	RENDER_STARTED : 2,
 	RENDER_COMPLETE : 3,
 	RENDER_FAILED : 4,
-	RENDER_CANCELLED : 5
+	RENDER_CANCELED : 5
 };
 
 /**
@@ -105,11 +105,11 @@ Bifocals.prototype._child_views = null;
 Bifocals.prototype.response = null;
 
 /**
- * Error handler, any time an error occurs it will be provided to this function. Can be overriden via Bifocals.error(fn);
+ * Error handler, any time an error occurs it will be provided to this function. Can be overridden via Bifocals.error(fn);
  * 
  * @param  {Error} error
  */
-Bifocals.prototype._error = function (error) {
+Bifocals.prototype._error = function bifocals_defaultError(error) {
 	console.log(error);
 	throw new Error('No error handler has been assigned to this view. Are one of your status calls erroring (404, 500, etc?). Maybe you have not set an error handler for your root template');
 };
@@ -155,11 +155,19 @@ Bifocals.prototype.parent = null;
 Bifocals.prototype.root = null;
 
 /**
+ * The current state of the bifocal object, can be one of the following.
+ * module.RENDER_NOT_CALLED, module.RENDER_REQUESTED, module.RENDER_STARTED,
+ * module.RENDER_COMPLETE, module.RENDER_FAILED, module.RENDER_CANCELED
+ * @type {Number}
+ */
+Bifocals.prototype.render_state = null;
+
+/**
  * returns whether the view has finished rendering or not
  * 
  * @returns {Boolean}
  */
-Bifocals.prototype.isRendered = function view_isRendered() {
+Bifocals.prototype.isRendered = function bifocals_isRendered() {
 	return this.render_state === render_states.RENDER_COMPLETE;
 };
 
@@ -170,7 +178,7 @@ Bifocals.prototype.isRendered = function view_isRendered() {
  * @param {mixed} value
  * @return {Bifocals} this, used for chaining
  */
-Bifocals.prototype.set = function view_set(key, value) {
+Bifocals.prototype.set = function bifocals_set(key, value) {
 	this._data[key] = value;
 	return this;
 };
@@ -181,7 +189,7 @@ Bifocals.prototype.set = function view_set(key, value) {
  * @param {String} key
  * @return {Mixed|Object}
  */
-Bifocals.prototype.get = function view_get(key) {
+Bifocals.prototype.get = function bifocals_get(key) {
 	if(typeof key === "string") {
 		return this._data[key];
 	}
@@ -193,7 +201,7 @@ Bifocals.prototype.get = function view_get(key) {
  * 
  * @returns {Boolean}
  */
-Bifocals.prototype.canRender = function view_canRender() {
+Bifocals.prototype.canRender = function bifocals_canRender() {
 	var key = null;
 
 	/**
@@ -228,10 +236,10 @@ Bifocals.prototype.canRender = function view_canRender() {
  * @param {String} template Renders the provided template unless one was set previously.
  * @param {Boolean} force Kills all child elements and forces the template to be rendered immediately. default: false
  */
-Bifocals.prototype.render = function view_render(template, force) {
+Bifocals.prototype.render = function bifocals_render(template, force) {
 	if (!force) {
-		// If rendering has been cancelled before we try to render, do nothing
-		if (this.render_state === render_states.RENDER_CANCELLED) {
+		// If rendering has been canceled before we try to render, do nothing
+		if (this.render_state === render_states.RENDER_CANCELED) {
 			return;
 		}
 
@@ -260,11 +268,11 @@ Bifocals.prototype.render = function view_render(template, force) {
 };
 
 /**
- * Stops a render from occuring, and attempts to stop all child elements too.
+ * Stops a render from occurring, and attempts to stop all child elements too.
  */
-Bifocals.prototype.cancelRender = function () {
+Bifocals.prototype.cancelRender = function bifocals_cancelRender() {
 	var key = null;
-	this.render_state = render_states.RENDER_CANCELLED;
+	this.render_state = render_states.RENDER_CANCELED;
 
 	for (key in this._child_views) {
 		this._child_views[key].cancelRender();
@@ -277,7 +285,7 @@ Bifocals.prototype.cancelRender = function () {
  * 
  * @return {Renderer}
  */
-Bifocals.prototype.buildRenderer = function view_buildRenderer() {
+Bifocals.prototype.buildRenderer = function bifocals_buildRenderer() {
 	var _self = this;
 
 	var renderer = new (exports.getRenderer(this.content_type))();
@@ -286,7 +294,7 @@ Bifocals.prototype.buildRenderer = function view_buildRenderer() {
 	renderer.error(function (error) {
 		_self.render_state = render_states.RENDER_FAILED;
 		_self._error(error);
-	}).end(function() {
+	}).end(function () {
 		_self.render_state = render_states.RENDER_COMPLETE;
 	});
 	return renderer;
@@ -299,7 +307,7 @@ Bifocals.prototype.buildRenderer = function view_buildRenderer() {
  * @param  {Function} fn takes a single parameter, the error
  * @return {Bifocals} this, used for chaining
  */
-Bifocals.prototype.error = function view_error(fn) {
+Bifocals.prototype.error = function bifocals_error(fn) {
 	this._error = fn;
 	return this;
 };
@@ -312,7 +320,7 @@ Bifocals.prototype.error = function view_error(fn) {
  * @param {String} template required, the template file to be rendered
  * @returns {Bifocals}
  */
-Bifocals.prototype.child = function view_child(key, template) {
+Bifocals.prototype.child = function bifocals_child(key, template) {
 	var new_view = new Bifocals();
 	new_view.content_type = this.content_type;
 	new_view.parent = this;
@@ -327,10 +335,10 @@ Bifocals.prototype.child = function view_child(key, template) {
 	// Makes a fake response that writes to the parent instead of to an actual response object
 	new_view.response = {
 		buffer: '',
-		write: function(chunk) {
+		write: function (chunk) {
 			this.buffer += chunk; 
 		},
-		end: function() { 
+		end: function () { 
 			// flag the child view as rendered
 			new_view.render_state = render_states.RENDER_COMPLETE;
 
@@ -339,7 +347,7 @@ Bifocals.prototype.child = function view_child(key, template) {
 
 			if(new_view.parent.canRender()) {
 				// Break up render flow by processing any parent renders on the next tick
-				process.nextTick(function() {
+				process.nextTick(function () {
 					new_view.parent.render();
 				});
 			}
@@ -357,7 +365,7 @@ Bifocals.prototype.child = function view_child(key, template) {
  * @param {int} code
  * @return {Bifocals} this, used for chaining
  */
-Bifocals.prototype.setStatusCode = function view_setStatusCode(code) {
+Bifocals.prototype.setStatusCode = function bifocals_setStatusCode(code) {
 	this.root.response.statusCode = code;
 	return this;
 };
@@ -368,7 +376,7 @@ Bifocals.prototype.setStatusCode = function view_setStatusCode(code) {
  * @param {Object} headers 
  * @return {Bifocals} this, used for chaining
  */
-Bifocals.prototype.setHeaders = function view_setHeaders(headers) {
+Bifocals.prototype.setHeaders = function bifocals_setHeaders(headers) {
 	var key = null;
 	for(key in headers) {
 		this.root.response.setHeader(key, headers[key]);
@@ -381,7 +389,7 @@ Bifocals.prototype.setHeaders = function view_setHeaders(headers) {
  * 
  * @param  {string} template information passed to the root rendererer to be immediately rendered
  */
-Bifocals.prototype.statusNotFound = function view_notFound(template) {
+Bifocals.prototype.statusNotFound = function bifocals_statusNotFound(template) {
 	this.setStatusCode(404);
 	this.root.cancelRender();
 	
@@ -399,7 +407,7 @@ Bifocals.prototype.statusNotFound = function view_notFound(template) {
  * @param {Error} error the error object you wish to provide to the view
  * @param  {String} template information passed to the root renderer to be immediately rendered
  */
-Bifocals.prototype.statusError = function view_error(error, template) {
+Bifocals.prototype.statusError = function bifocals_statusError(error, template) {
 	this.setStatusCode(500);
 	this.root.set('error', error);
 
@@ -426,7 +434,7 @@ Bifocals.prototype.statusError = function view_error(error, template) {
  * 
  * @param  {string} redirect_url
  */
-Bifocals.prototype.statusCreated = function view_created(redirect_url) {
+Bifocals.prototype.statusCreated = function bifocals_statusCreated(redirect_url) {
 	this.setStatusCode(201);
 	this.setHeaders({
 		Location : redirect_url
@@ -442,7 +450,7 @@ Bifocals.prototype.statusCreated = function view_created(redirect_url) {
  * @todo describe how this would be properly used
  * @param  {string} redirect_url
  */
-Bifocals.prototype.statusRedirect = function view_redirect(redirect_url) {
+Bifocals.prototype.statusRedirect = function bifocals_statusRedirect(redirect_url) {
 	this.setStatusCode(302);
 	this.setHeaders({
 		Location : redirect_url
@@ -457,7 +465,7 @@ Bifocals.prototype.statusRedirect = function view_redirect(redirect_url) {
  * This tells the browser to use a previously cached version of this page.
  * @todo : as a parameter take some headers to control this? date, etag, expires, cache control
  */
-Bifocals.prototype.statusNotModified = function view_notModified() {
+Bifocals.prototype.statusNotModified = function bifocals_statusNotModified() {
 	this.setStatusCode(304);
 	this.root.cancelRender();
 	// date
@@ -475,7 +483,7 @@ Bifocals.prototype.statusNotModified = function view_notModified() {
  * 
  * @param  {Array} supported_methods 
  */
-Bifocals.prototype.statusUnsupportedMethod = function view_unsupportedMethod(supported_methods) {
+Bifocals.prototype.statusUnsupportedMethod = function bifocals_statusUnsupportedMethod(supported_methods) {
 	this.setStatusCode(405);
 	this.setHeaders({
 		Allow : supported_methods.join(',')
@@ -487,7 +495,7 @@ Bifocals.prototype.statusUnsupportedMethod = function view_unsupportedMethod(sup
 /**
  * Base object to handle rendering view data
  */
-var Renderer = exports.Renderer = function() {
+var Renderer = exports.Renderer = function Renderer() {
 	this.response = {};
 	this.data = {};
 };
@@ -495,7 +503,7 @@ var Renderer = exports.Renderer = function() {
 Renderer.prototype.response = null;
 Renderer.prototype.data = null;
 
-Renderer.prototype._error = function (err) {
+Renderer.prototype._error = function renderer_defaultError(err) {
 	// In case the error is called before the error handler is applied, we mess with the function so we still get output
 	this.error = function (fn) {
 		process.nextTick(function () {
@@ -504,11 +512,9 @@ Renderer.prototype._error = function (err) {
 		return this;
 	};
 };
-Renderer.prototype._end = function () {
+Renderer.prototype._end = function renderer_defaultEnd() {
 	this.end = function (fn) {
-		process.nextTick(function () {
-			fn();
-		});
+		process.nextTick(fn);
 		return this;
 	};
 };
@@ -519,7 +525,7 @@ Renderer.prototype._end = function () {
  * @param  {Function} fn takes a single parameter, the error
  * @return {Renderer} this, used for chaining
  */
-Renderer.prototype.error = function (fn) {
+Renderer.prototype.error = function renderer_error(fn) {
 	this._error = fn;
 	return this;
 };
@@ -529,7 +535,7 @@ Renderer.prototype.error = function (fn) {
  * 
  * @return {Renderer} this, used for chaining
  */
-Renderer.prototype.end = function (fn) {
+Renderer.prototype.end = function renderer_end(fn) {
 	this._end = fn;
 	return this;
 };
