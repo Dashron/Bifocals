@@ -5,6 +5,7 @@ A View library with support for asynchronous sub-views (aka partials), and inter
 
 ## Table of Contents
 
+* [Installation](#installation)
 * [Basic Use](#basic-use)
   * [Why do I need this library?](#why-do-i-need-this-library)
   * [Important Notes](#important-notes)
@@ -17,6 +18,13 @@ A View library with support for asynchronous sub-views (aka partials), and inter
 * [Future Features](#future-features)
 
 ----
+
+### Installation:
+
+`npm install bifocals`
+
+    var bifocals_module = require('bifocals');
+    var Bifocals = bifocals_module.Bifocals;
 
 ### Basic Use:
 templates/index.html
