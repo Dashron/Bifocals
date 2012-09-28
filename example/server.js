@@ -61,6 +61,7 @@ http_module.createServer(function (request, response) {
 		view.render('flat_file.txt');
 	} else {
 		// Render a 404 page
+		view.content_type = "text/plain";
 		view.statusNotFound('404.html');
 	}
 
