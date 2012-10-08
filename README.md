@@ -59,7 +59,7 @@ server.js
 
         // Create the child:
         var child = view.child("header");
-        child.set('title, "Hello World");
+        child.set('title', "Hello World");
         child.render("templates/header.html");
 
 		// Write the view to the response
