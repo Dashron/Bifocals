@@ -32,7 +32,7 @@
       <section>
         <h1>Bifocals</h1>
 
-<p>A node.js View library with support for asynchronous sub-views (aka partials), and interchangeable rendering systems.</p>
+<p>A node.js View library with support for asynchronous sub-views (aka partials) and interchangeable rendering systems.</p>
 
 <h2>Table of Contents</h2>
 
@@ -60,14 +60,14 @@
 <li><a href="#future-features">Future Features</a></li>
 </ul>
 
-<h3 id="installation">Installation:</h3>
+<h3 id="installation">Installation</h3>
 
 <pre><code>npm install bifocals</code></pre>
 
 <pre><code>var bifocals_module = require('bifocals');
 var Bifocals = bifocals_module.Bifocals;
 </code></pre>
-<h3 id="basic-use">Basic Use:</h3>
+<h3 id="basic-use">Basic Use</h3>
 
 <p>templates/index.html</p>
 
@@ -110,7 +110,7 @@ http_module.createServer(function (request, response) {
 }
 </code></pre>
 
-<p>And you are done! When the client requests this page, it will receive the following html</p>
+<p>That's it! When the client requests this page, the following html will be displayed:</p>
 
 <pre><code>&lt;html&gt;
     &lt;head&gt;&lt;/head&gt;
@@ -124,7 +124,7 @@ http_module.createServer(function (request, response) {
 
 <h3 id="why-do-i-need-this-library">Why do I need this library?</h3>
 
-<p>The previous example does not show the benefits of the library. The benefits come when performing asynchronous actions. It might be easier to explain with a more complex example.</p>
+<p>The previous example does not show the true benefits of the library. These benefits are apparent when performing asynchronous actions. Consider this more complex example:</p>
 
 <pre><code>http_module.createServer(function (request, response) {
     // Create the parent:
@@ -186,7 +186,7 @@ http_module.createServer(function (request, response) {
 <li>You must create all children before you tell the parent to render, otherwise the output template could be incomplete.</li>
 </ul><h3 id="writing-your-own-renderer">Writing your own Renderer</h3>
 
-<p>You must extend the renderer class</p>
+<p>You must extend the <code>Renderer</code> class:</p>
 
 <pre><code>var FileRenderer = module.exports = function FileRenderer() {
     Renderer.call(this);
@@ -197,9 +197,9 @@ util_module.inherits(FileRenderer, Renderer);
 
 <p>You must define a render function. It does not need to take any parameters, but you will be provided the proper template if possible. This template will be a string, defining the full path to the target template. If you wish to cache this file it should be handled via your renderer.</p>
 
-<p>Each renderer will be assigned a "response" object. It may or may not be a ServerResponse object, so you can only expect expect two functions, write(mixed) and end().</p>
+<p>Each renderer will be assigned a "response" object. It may or may not be a <code>ServerResponse</code> object, so you can only expect expect two functions, <code>write(mixed)</code> and <code>end()</code>.</p>
 
-<p>Write should be called any time data is complete, and ready to be sent to the user. End should be called to signify the end of data.</p>
+<p><code>write(mixed)</code> should be called any time data is complete and ready to be sent to the user, while <code>end()</code> should be called to signify the end of data.</p>
 
 <p>Additionally each renderer will have an "_error" function. This function will be provided with the view's error handler, it should be called any time an error occurs.</p>
 
@@ -231,19 +231,19 @@ util_module.inherits(FileRenderer, Renderer);
 <hr>
 <h5>addRenderer(content_type, renderer)</h5>
 
-<p>content_type : string</p>
+<p><code>content_type</code> : string</p>
 
-<p>renderer : Renderer</p>
+<p><code>renderer</code> : Renderer</p>
 
 <p>Registers a renderer object to a content type.</p>
 
-<p>Every content type used must have an associated Renderer. Included in the "renderers" folder are two examples, one for serving files directly, and one for rendering templates through Handlebars.</p>
+<p>Every content type used must have an associated renderer. Included in the "renderers" folder are two examples, one for serving files directly, and one for rendering templates through Handlebars.</p>
 
 <h5>getRenderer(content_type)</h5>
 
-<p>content_type : string</p>
+<p><code>content_type</code> : string</p>
 
-<p>Returns the appropriate renderer for the provided content_type.</p>
+<p>Returns the appropriate renderer for the provided content_type parameter.</p>
 
 <p>If no renderer has been registered to the content type, an error is thrown.</p>
 
@@ -267,7 +267,7 @@ This should only be called for a root view, any child views should be spawned of
 
 <p>Your first task should be to assign the response object.
 Your second task should be to assign an error handler.
-Be careful with the error handler though, if you request statusError to render a template, and you run into another error, you will end up in an infinite loop.</p>
+Be careful with the error handler. If <code>statusError</code> handles all failed templates and then fails, you will become locked in an infinite loop.</p>
 
 <p>var view = new Bifocals();
 view.response = response;
@@ -283,7 +283,7 @@ view.error(function (error) {
 <p>The object that the final rendered output will be written to.</p>
 
 <p>Changing this will change the destination of the final rendered output.
-It is not recommended to change this on child views, they use different response objects than normal. Generally only a root view would have an actual ServerResponse stored here</p>
+It is not recommended to change this on child views, as they use different response objects than normal. Generally only a root view would store an actual <code>ServerResponse</code>.</p>
 
 <h5>content_type</h5>
 
@@ -293,7 +293,7 @@ It is not recommended to change this on child views, they use different response
 
 <p>A string that is provided along with all view data to the final render step. If this string is set, it will override the template provided to the render function.</p>
 
-<p>When provided to the renderer, it is prefixed with the <code>dir</code> property</p>
+<p>When provided to the renderer, it is prefixed with the <code>dir</code> property.</p>
 
 <h5>dir</h5>
 
@@ -316,13 +316,13 @@ It is not recommended to change this on child views, they use different response
 
 <h5>isRendered()</h5>
 
-<p>Returns true/false, if the view has completed its rendering process</p>
+<p>Returns true or false, depending on whether the view has completed its rendering process.</p>
 
 <h5>set(key, value)</h5>
 
-<p>key : string</p>
+<p><code>key</code> : string</p>
 
-<p>value : mixed</p>
+<p><code>value</code> : mixed</p>
 
 <p>Stores a key value pair to be provided to the renderer.</p>
 
@@ -330,25 +330,25 @@ It is not recommended to change this on child views, they use different response
 
 <h5>get(key)</h5>
 
-<p>key : string</p>
+<p><code>key</code> : string</p>
 
 <p>Retrieves a value that was assigned via <code>set</code>, based on the values key.</p>
 
 <h5>canRender()</h5>
 
-<p>Returns true/false, if the view is able to be rendered immediately.</p>
+<p>Returns true or false, depending on whether the view is able to be rendered immediately.</p>
 
 <h5>render(template, force)</h5>
 
-<p>template : string (varies, depending on the Renderer)</p>
+<p><code>template</code> : string (varies, depending on the renderer)</p>
 
-<p>force : optional boolean default false</p>
+<p><code>force</code> : optional boolean default false</p>
 
 <p>Combines the data and template into a string, and writes it all out to the response.</p>
 
-<p>The first parameter should be a path to your template. If you have set a dir, the template will be appended on to the dir. For the handlebars renderer, this needs to be the absolute path.</p>
+<p>The first parameter should be a path to your template. If you have set the <code>dir</code> property, it will be prepended to the template parameter. For the Handlebars renderer, the final combined template needs to result in an absolute file path.</p>
 
-<p>If you have already assigned a template to the view (via the template property), the first parameter will be ignored. The template property takes precedence over the the render functions template parameter.</p>
+<p>If you have already assigned a template to the view (via the <code>template</code> property), the <code>template</code> parameter will be ignored.</p>
 
 <p>The second parameter is a boolean. If true, all child views will be canceled and the render will happen immediately. This is generally useful for handling errors.</p>
 
@@ -361,23 +361,23 @@ If you want to use child views, they must be created before this render call, bu
 
 <h5>buildRenderer()</h5>
 
-<p>Builds a renderer object from various data located within this view</p>
+<p>Builds a renderer object from various data located within this view.</p>
 
 <h5>error(fn)</h5>
 
-<p>fn : function(error)</p>
+<p><code>fn</code> : function(error)</p>
 
-<p>Assigns an error handler to this view. Child elements will inherit this error handler. The callback will be provided one parameter, the error.</p>
+<p>Assigns an error handler to this view. Child elements will inherit this error handler. The callback will be provided one parameter: the error.</p>
 
 <h5>child(key, template)</h5>
 
-<p>key : string</p>
+<p><code>key</code> : string</p>
 
-<p>template : optional string (varies, depending on the Renderer)</p>
+<p><code>template</code> : optional string (varies, depending on the renderer)</p>
 
 <p>Creates a child view, which this view will depend on.</p>
 
-<p>The first parameter is a key. The final rendered output of the child will be set to the parent view using this key. So for example...</p>
+<p>The first parameter is a key. The final rendered output of the child will be set to the parent view using this key. For example:</p>
 
 <pre><code>var view = new Bifocals();
 var child = view.child('a');
@@ -389,58 +389,58 @@ child.render('template.html');
 view.get('a') === 'hello';
 </code></pre>
 
-<p>The second parameter is a template. If you provide a template here, it will be considered the same as <code>child.template = template</code>. This means it will override the template provided to the <code>render</code> function call.</p>
+<p>The second parameter is a template. If you provide a template here, it will be considered the same as <code>child.template = template</code>. This means it will override the template provided to the <code>render(template,force)</code> function call.</p>
 
 <h5>setStatusCode(code)</h5>
 
-<p>code : number </p>
+<p><code>code</code> : number </p>
 
-<p>This should only be called on the parent. This sets the status code in the response headers</p>
+<p>This should only be called on the parent. This sets the status code in the response headers.</p>
 
 <h5>setHeaders(headers)</h5>
 
-<p>headers : object</p>
+<p><code>headers</code> : object</p>
 
-<p>Sets a collection of headers, where each key:value pair is a Header:value pair</p>
+<p>Sets a collection of headers, where each key:value pair is a Header:value pair.</p>
 
 <h5>statusNotFound(template)</h5>
 
-<p>template : optional string (varies, depending on the Renderer)</p>
+<p><code>template</code> : optional string (varies, depending on the renderer)</p>
 
-<p>End rendering immediately with a 404: Not found status code, and renders the template if provided</p>
+<p>End rendering immediately with a <strong>404: Not found</strong> status code, and renders the template if provided.</p>
 
 <h5>statusError(error, template)</h5>
 
-<p>error : optional error</p>
+<p><code>error</code> : optional error</p>
 
-<p>template : optional template (varies, depending on the Renderer)</p>
+<p><code>template</code> : optional template (varies, depending on the renderer)</p>
 
-<p>End rendering immediately with a 500: Error code, and renders the template if provided
-Additionally the error is assigned to the view with the key "error" </p>
+<p>End rendering immediately with a <strong>500: Error</strong> code, and renders the template if provided
+Additionally the error is assigned to the view with the key "error".</p>
 
 <h5>statusCreated(redirect_url)</h5>
 
-<p>redirect_url : string (url)</p>
+<p><code>redirect_url</code> : string (url)</p>
 
-<p>End rendering immediately with a 201: Created code. The redirect_url is provided via the Location header, and should point to the newly created resource</p>
+<p>End rendering immediately with a <strong>201: Created</strong> code. <code>redirect_url</code> is sent via the Location header, and should point to the newly created resource.</p>
 
 <h5>statusRedirect(redirect_url)</h5>
 
-<p>redirect_url : string (url)</p>
+<p><code>redirect_url</code> : string (url)</p>
 
-<p>End rendering immediately with a 302: Found code. The redirect_url is provided via the Location header, which the client should automatically follow.
+<p>End rendering immediately with a <strong>302: Found</strong> code. <code>redirect_url</code> is sent via the Location header, which the client should automatically follow.
 todo: support other 300's</p>
 
 <h5>statusNotModified()</h5>
 
-<p>End rendering immediately with a 304: Not Modified code. This should be in response to a request with cache headers, and the client should respond by displaying the previously cached response.
+<p>End rendering immediately with a <strong>304: Not Modified</strong> code. This should be in response to a request with cache headers, and the client should respond by displaying the previously cached response.
 //todo : as a parameter take some headers to control this? date, etag, expires, cache control</p>
 
 <h5>statusUnsupportedMethod(supported_methods)</h5>
 
-<p>supported_methods : array</p>
+<p><code>supported_methods</code> : array</p>
 
-<p>Ends rendering immediately with a 405: Unsupported Method code. This should be in response to a failed request, if the request would be successful when made with an alternative http method.</p>
+<p>Ends rendering immediately with a <strong>405: Unsupported Method</code> code. This should be in response to a failed request, if the request would be successful when made with an alternative http method.</p>
 
 <h4 id="renderer-reference">Renderer Reference</h4>
 <hr>
@@ -450,7 +450,7 @@ todo: support other 300's</p>
 
 <h5>response</h5>
 
-<p>Automatically set when Bifocals builds a renderer. This will be an object with write(data) and end() functions.</p>
+<p>Automatically set when Bifocals builds a renderer. This will be an object with <code>write(data)</code> and <code>end()</code> functions.</p>
 
 <h5>data</h5>
 
@@ -458,23 +458,23 @@ todo: support other 300's</p>
 
 <h5>error(fn)</h5>
 
-<p>fn : function(error)</p>
+<p><code>fn</code> : function(error)</p>
 
-<p>returns : this</p>
+<p>returns : <code>this</code></p>
 
-<p>Assigns a function that will be called any time an error occurs in the renderer. The assigned function should be called via the renderer's _error property.</p>
+<p>Assigns a function that will be called any time an error occurs in the renderer. The assigned function should be called via the renderer's <code>_error</code> property.</p>
 
 <h5>end(fn)</h5>
 
-<p>returns : this</p>
+<p>returns : <code>this</code></p>
 
-<p>Assigns a function that will be called when the renderer is complete. The assigned function should be called via the _end property.</p>
+<p>Assigns a function that will be called when the renderer is complete. The assigned function should be called via the <code>_end</code> property.</p>
 
-<h3 id="coding-standards">Coding Standards:</h3>
+<h3 id="coding-standards">Coding Standards</h3>
 
-<p>If a object property is prefixed with an underscore (_) IGNORE IT. Changing it is not supported, and has not been considered in the development of the library.</p>
+<p>If an object property is prefixed with an underscore (_), <em>ignore it</em>. Changing these properties is not supported and has not been considered in the development of the library.</p>
 
-<p>If it is not prefixed with an underscore (_) and is not a function, you can change it however you see fit. Just read the documentation and understand the side effects of changing the variable.</p>
+<p>If an object property is <em>not</em> prefixed with an underscore (_), and is not a function, you may change it however you see fit. Just read the documentation and understand the side effects of changing the variable.</p>
 
 <h3 id="future-features">Future Features:</h3>
 
@@ -486,7 +486,7 @@ todo: support other 300's</p>
 <li>The Bifocals object will keep track of the function passed via parameter, and wait to call it until the user has requested the view to be rendered.</li>
 <li>The function passed via parameter should return an object. The object will be assigned as a series of key value pairs to the bifocal object via set.</li>
 <li>This will make it easier to render templates from within a template, allowing all design decisions to be handled via the views.</li>
-<li>This will also be more useful in error cases, or custom status codes because the function will be ignored entirely</li>
+<li>This will also be more useful in error cases or custom status codes because the function will be ignored entirely.</li>
 </ul>
       </section>
       <footer>
