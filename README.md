@@ -1,7 +1,7 @@
 # Bifocals
 ==========
 
-A View library with support for asynchronous sub-views (aka partials), and interchangeable rendering systems.
+A node.js View library with support for asynchronous sub-views (aka partials) and interchangeable rendering systems.
 
 See http://bifocalsjs.com for more documentation.
 
@@ -54,7 +54,7 @@ server.js
     	view.render("templates/index.html");
     }
 
-And you are done! When the client requests this page, it will receive the following html
+That's it! When the client requests this page, the following html will be displayed:
 
     <html>
         <head></head>
@@ -67,7 +67,7 @@ And you are done! When the client requests this page, it will receive the follow
 
 ### Why do I need this library?
 
-The previous example does not show the benefits of the library. The benefits come when performing asynchronous actions. It might be easier to explain with a more complex example.
+The previous example does not show the true benefits of the library. These benefits are apparent when performing asynchronous actions. Consider this more complex example:
 
     http_module.createServer(function (request, response) {
     	// Create the parent:
