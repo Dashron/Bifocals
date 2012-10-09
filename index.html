@@ -271,12 +271,12 @@ This should only be called for a root view, any child views should be spawned of
 Your second task should be to assign an error handler.
 Be careful with the error handler. If <code>statusError</code> handles all failed templates and then fails, you will become locked in an infinite loop.</p>
 
-<p>var view = new Bifocals();
+<pre><code>var view = new Bifocals();
 view.response = response;
 view.error(function (error) {
     console.log(error);
     view.statusError(error);
-});</p>
+});</code></pre>
 
 <h4 id="bifocals-reference">Bifocals Reference</h4>
 <hr>
