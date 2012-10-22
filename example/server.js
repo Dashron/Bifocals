@@ -55,7 +55,7 @@ http_module.createServer(function (request, response) {
 		
 		// Render the parent view. First and second child may or may not be done, but we definitely know that third child has not even started. This will tell the parent that it's ready, and wait for all the children to be complete.
 		view.render('index.html');
-	} else if (request.url === "/static/") {
+	} else if (request.url === "/static") {
 		// Render a static file (this could also be css or js if the renderer supported that)
 		view.content_type = "text/plain";
 		view.render('flat_file.txt');
