@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="stylesheets/styles.css">
     <link rel="stylesheet" href="stylesheets/pygment_trac.css">
     <script src="javascripts/scale.fix.js"></script>
+    <script src="javascripts/jquery-1.8.2.min.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
     <!--[if lt IE 9]>
     <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -43,6 +44,7 @@
 
 <ul>
 <li><a href="#why-do-i-need-this-library">Why do I need this library?</a></li>
+<li><a href="#interactive-example">Interactive Example</a></li>
 <li><a href="#important-notes">Important notes</a></li>
 </ul>
 </li>
@@ -177,6 +179,31 @@ http_module.createServer(function (request, response) {
     view.render("templates/index.html");
 }
 </code></pre>
+
+<h3 id="interactive-example">Interactive Example</h3>
+<div id="interactive">
+	<div class="row">
+		<div class="view" id="view_1" data-children="2,3" data-root="1" data-state="RENDER_NOT_CALLED">
+		</div>
+	</div>
+	<div class="row">
+		<div class="view" id="view_2" data-root="1" data-parent="1" data-state="RENDER_NOT_CALLED">
+		</div>
+		<div class="view" id="view_3" data-children="4,5" data-root="1" data-parent="1" data-state="RENDER_NOT_CALLED">
+		</div>
+	</div>
+	<div class="row">
+		<div class="view" id="view_4" data-children = "6" data-root="1" data-parent="3" data-state="RENDER_NOT_CALLED">
+		</div>
+		<div class="view" id="view_5" data-root="1" data-parent="3" data-state="RENDER_NOT_CALLED">
+		</div>
+	</div>
+	<div class="row">
+		<div class="view" id="view_6" data-root="1" data-parent="4" data-state="RENDER_NOT_CALLED">
+		</div>
+	</div>
+</div>
+<script src="javascripts/guide.js"></script>
 
 <h3 id="important-notes">Important notes</h3>
 

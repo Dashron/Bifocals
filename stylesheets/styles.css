@@ -411,3 +411,23 @@ footer {
     color:#444;
   }
 }
+
+
+/* Interactive Helper */
+.row {
+	height: 40px;
+	width :500px;
+}
+
+.view {
+	float : left;
+	width : 60px;
+	height : 20px;
+	background-color: #32CD32;
+	margin-left: 50px;
+	margin-right: 50px;
+}
+
+#view_4 {
+	margin-left: 130px;
+}
