@@ -45,6 +45,7 @@
 <ul>
 <li><a href="#why-do-i-need-this-library">Why do I need this library?</a></li>
 <li><a href="#interactive-example">Interactive Example</a></li>
+<li><a href="#more-examples">More Examples</a></li>
 <li><a href="#important-notes">Important notes</a></li>
 </ul>
 </li>
@@ -223,6 +224,17 @@ Try clicking them in every order you can think of, they all should still work.<b
 	</div>
 </div>
 <script src="javascripts/guide.js"></script>
+
+<h3 id="more-examples">More Examples</h3>
+When you install bifocals, you also install an example.<br />
+It is located in the "example" directory and requires handlebars to run. (npm install handlebars)<br /><br />
+
+Once run (node server.js), the example starts a web server.<br />
+If you access <a href="http://localhost:8125">localhost:8125</a> you will see the output of one view with two children, all of which were rendered via handlebars<br /><br />
+
+If you access <a href="http://localhost:8125/static">localhost:8125/static</a> you will see the output of one view which was rendered using the static file renderer.
+
+If you access any other path, such as <a href="http://localhost:8125/fakefakefake">localhost:8125/fakefakefake</a>, it should send a proper 404 error code.
 
 <h3 id="important-notes">Important notes</h3>
 
