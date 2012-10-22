@@ -106,6 +106,12 @@
 		}
 	}
 
+	function update_element_state (element, state) {
+		element.data('state', state);
+		element.css('background-color', colors[state]);
+		element.html(state.replace('RENDER_', ''));
+	}
+
 	function change_state (element, state) {
 		var parent = null;
 		var children = null;
@@ -113,8 +119,7 @@
 		switch (state) {
 			case "RENDER_REQUESTED" :
 				if (element.data('state') === "RENDER_NOT_CALLED") {
-					element.data('state', state);
-					element.css('background-color', colors[state]);
+					update_element_state(element, state);
 
 					// if you can render this view, start the rendering immediately
 					if (can_render(element)) {
@@ -131,8 +136,7 @@
 					alert('View:' + element.attr('id') + ' can not yet render');
 				} else {
 					if (element.data('state') === "RENDER_REQUESTED") {
-						element.data('state', state);
-						element.css('background-color', colors[state]);
+						update_element_state(element, state);
 
 						// Rendering can take awhile, let it process
 						// TODO: randomize this
@@ -148,8 +152,7 @@
 
 			case "RENDER_COMPLETE" :
 				if (element.data('state') === "RENDER_STARTED") {
-					element.data('state', state);
-					element.css('background-color', colors[state]);
+					update_element_state(element, state);
 
 					// if the parent can render now because this child has finished, render it immediately
 					parent = $('#view_' + element.data('parent'));
@@ -165,14 +168,14 @@
 				break;
 
 			case "RENDER_FAILED" :
-				element.data('state', state);
-				element.css('background-color', colors[state]);
+				update_element_state(element, state);
+
 				alert('Render failed!');
 				break;
 
 			case "RENDER_CANCELLED" :
-				element.data('state', state);
-				element.css('background-color', colors[state]);
+				update_element_state(element, state);
+
 				var chilren = locate_children(element);
 				children.forEach(function (child) {
 					change_state(child, "RENDER_CANCELLED");

@@ -414,20 +414,72 @@ footer {
 
 
 /* Interactive Helper */
+#interactive {
+	border-style: solid;
+	border-color: black;
+	border-width: 1px;
+	padding: 5px;
+	width: 440px;
+}
+
 .row {
-	height: 40px;
-	width :500px;
+	height: 22px;
+	width :100%;
 }
 
 .view {
 	float : left;
-	width : 60px;
+	width : 100px;
 	height : 20px;
 	background-color: #32CD32;
-	margin-left: 50px;
-	margin-right: 50px;
+	padding: 1px;
+	text-align: center;
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	cursor: pointer;
 }
 
-#view_4 {
-	margin-left: 130px;
+#view_1, #view_4 {
+	margin-left: 150px;
+}
+
+#view_2, #view_6 {
+	margin-left: 80px;
+}
+
+#view_3, #view_5 {
+	margin-left: 50px;
+}
+
+.connector {
+	width: 5px;
+	height: 22px;
+	float: left;
+	border-right-style: solid;
+	border-right-color: black;
+	border-right-width: 1px;
+}
+
+#connector_1 {
+	margin-left: 160px;
+}
+
+#connector_2 {
+	margin-left: 70px;
+}
+
+#connector_3 {
+	margin-left: 235px;
+}
+
+#connector_4 {
+	margin-left: 75px;
+}
+
+#connector_5 {
+	margin-left: 160px;
 }

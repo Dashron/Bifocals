@@ -181,25 +181,44 @@ http_module.createServer(function (request, response) {
 </code></pre>
 
 <h3 id="interactive-example">Interactive Example</h3>
+Each box below represents one bifocals object.<br />
+Lines connect parent objects to one or more children.<br />
+To call the function render(), click the box.<br />
+Try clicking them in every order you can think of, they all should still work.<br /><br />
 <div id="interactive">
 	<div class="row">
 		<div class="view" id="view_1" data-children="2,3" data-root="1" data-state="RENDER_NOT_CALLED">
+			READY
 		</div>
+	</div>
+	<div class="row">
+		<div id="connector_1" class="connector">&nbsp;</div><div id="connector_2" class="connector">&nbsp;</div>
 	</div>
 	<div class="row">
 		<div class="view" id="view_2" data-root="1" data-parent="1" data-state="RENDER_NOT_CALLED">
+			READY
 		</div>
 		<div class="view" id="view_3" data-children="4,5" data-root="1" data-parent="1" data-state="RENDER_NOT_CALLED">
+			READY
 		</div>
+	</div>
+	<div class="row">
+		<div id="connector_3" class="connector">&nbsp;</div><div id="connector_4" class="connector">&nbsp;</div>
 	</div>
 	<div class="row">
 		<div class="view" id="view_4" data-children = "6" data-root="1" data-parent="3" data-state="RENDER_NOT_CALLED">
+			READY
 		</div>
 		<div class="view" id="view_5" data-root="1" data-parent="3" data-state="RENDER_NOT_CALLED">
+			READY
 		</div>
 	</div>
 	<div class="row">
+		<div id="connector_5" class="connector">&nbsp;</div>
+	</div>
+	<div class="row">
 		<div class="view" id="view_6" data-root="1" data-parent="4" data-state="RENDER_NOT_CALLED">
+			READY
 		</div>
 	</div>
 </div>
@@ -523,16 +542,15 @@ todo: support other 300's</p>
       </footer>
     </div>
     <!--[if !IE]><script>fixScale(document);</script><![endif]-->
-		          <script type="text/javascript">
-            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
-            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
-          </script>
-          <script type="text/javascript">
-            try {
-              var pageTracker = _gat._getTracker("UA-35124160-1");
-            pageTracker._trackPageview();
-            } catch(err) {}
-          </script>
-
+	<script type="text/javascript">
+		var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+		document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+	</script>
+	<script type="text/javascript">
+		try {
+			var pageTracker = _gat._getTracker("UA-35124160-1");
+			pageTracker._trackPageview();
+		} catch(err) {}
+    </script>
   </body>
 </html>
