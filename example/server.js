@@ -59,6 +59,10 @@ http_module.createServer(function (request, response) {
 		// Render a static file (this could also be css or js if the renderer supported that)
 		view.content_type = "text/plain";
 		view.render('flat_file.txt');
+	} else if (request.url === "/unauth") {
+		// Render a static file (this could also be css or js if the renderer supported that)
+		view.content_type = "text/plain";
+		view.statusUnauthorized('unauth.html');
 	} else {
 		// Render a 404 page
 		view.content_type = "text/plain";

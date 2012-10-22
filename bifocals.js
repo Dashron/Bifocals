@@ -492,6 +492,18 @@ Bifocals.prototype.statusUnsupportedMethod = function bifocals_statusUnsupported
 	this.root.response.end();
 };
 
+Bifocals.prototype.statusUnauthorized = function bifocals_statusUnauthorized(template)
+{
+	this.setStatusCode(401);
+	this.root.cancelRender();
+	if (typeof template !== "string") {
+		this.root.cancelRender();
+		this.root.response.end();
+	} else {
+		this.root.render(template, true);
+	}
+};
+
 /**
  * Base object to handle rendering view data
  */
