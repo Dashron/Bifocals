@@ -230,9 +230,11 @@ When you install bifocals, you also install an example.<br />
 It is located in the "example" directory and requires handlebars to run. (npm install handlebars)<br /><br />
 
 Once run (node server.js), the example starts a web server.<br />
-If you access <a href="http://localhost:8125">localhost:8125</a> you will see the output of one view with two children, all of which were rendered via handlebars<br /><br />
+If you access <a href="http://localhost:8125">localhost:8125</a> you will see the output of one view with two children, all of which were rendered via handlebars.<br /><br />
 
-If you access <a href="http://localhost:8125/static">localhost:8125/static</a> you will see the output of one view which was rendered using the static file renderer.
+If you access <a href="http://localhost:8125/static">localhost:8125/static</a> you will see the output of one view which was rendered using the static file renderer.<br /><br />
+
+If you access <a href="http://localhost:8125/unauth">localhost:8125/unauth</a> you will receive a 401 Unauthorized status code, and the output of a template.<br /><br />
 
 If you access any other path, such as <a href="http://localhost:8125/fakefakefake">localhost:8125/fakefakefake</a>, it should send a proper 404 error code.
 
@@ -468,6 +470,12 @@ view.get('a') === 'hello';
 <p><code>template</code> : optional string (varies, depending on the renderer)</p>
 
 <p>End rendering immediately with a <strong>404: Not found</strong> status code, and renders the template if provided.</p>
+
+<h5>statusUnauthorized(template)</h5>
+
+<p><code>template</code> : optional string (varies, depending on the renderer)</p>
+
+<p>End rendering immediately with a <strong>401: Unauthorized</strong> status code, and renders the template if provided.</p>
 
 <h5>statusError(error, template)</h5>
 
