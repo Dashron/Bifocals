@@ -50,7 +50,7 @@ server.js
         child.set('title', "Hello World");
         child.render("templates/header.html");
 
-	// Write the view to the response
+        // Write the view to the response
     	view.render("templates/index.html");
     });
 
