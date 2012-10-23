@@ -50,9 +50,9 @@ server.js
         child.set('title', "Hello World");
         child.render("templates/header.html");
 
-	// Write the view to the response
+        // Write the view to the response
     	view.render("templates/index.html");
-    }
+    });
 
 That's it! When the client requests this page, the following html will be displayed:
 
@@ -112,13 +112,13 @@ The previous example does not show the true benefits of the library. These benef
         		}
         	});
         });
-        
+
 
 		// Write the view to the response
 		// At this point, neither of the children will have rendered.
 		// The view is flagged as "ready", and whenever the final child has rendered this view will render.
     	view.render("templates/index.html");
-    }
+    });
 
 ### Important Notes
 * You must register a Renderer to any content type you wish to use.
