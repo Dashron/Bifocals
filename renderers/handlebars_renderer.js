@@ -1,3 +1,5 @@
+"use strict";
+
 var http_module = require('http');
 var util_module = require('util');
 var fs_module = require('fs');
@@ -33,7 +35,7 @@ HandlebarsRenderer.prototype.render = function (template) {
 		this.response.status_code = 200;
 	}
 
-	if (typeof compiled_views[template] == "undefined" || compiled_views[template] == null) {
+	if (typeof compiled_views[template] === "undefined" || compiled_views[template] === null) {
 		var stream = fs_module.createReadStream(template);
 
 		var buffer = '';
@@ -52,7 +54,7 @@ HandlebarsRenderer.prototype.render = function (template) {
 	} else {
 		process.nextTick(function () {
 			_self.executeTemplate(template);
-		})
+		});
 	}
 };
 
