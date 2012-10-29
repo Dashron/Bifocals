@@ -2,6 +2,8 @@
 
 var http_module = require('http');
 var bifocals_module = require('../bifocals');
+var handlebars_module = require('handlebars');
+var fs_module = require('fs');
 
 var View = bifocals_module.Bifocals;
 
@@ -13,11 +15,9 @@ var config = {
 
 http_module.createServer(function (request, response) {
 	// Create the view
-	var view = new View();
+	var view = new View(response);
 	// Assign a default directory
 	view.dir = config.template_dir;
-	// Assign the ServerResponse object to the root view
-	view.response = response;
 
 	// If an error happens, throw the right status code!
 	// Because this is an example, I do not render an error template. 
@@ -74,5 +74,26 @@ http_module.createServer(function (request, response) {
 });
 
 bifocals_module.addRenderer('text/plain', require('../renderers/file_renderer'));
-bifocals_module.addRenderer('text/html', require('../renderers/handlebars_renderer'));
-// mustache renderer
+
+bifocals_module.addRenderer('text/html', function (path, data, callback) {
+	var stream = fs_module.createReadStream(path);
+
+	var template = '';
+	stream.on('data', function (chunk) {
+		template += chunk;
+	});
+
+	stream.on('end', function () {
+		try {
+			var compiled_template = handlebars_module.compile(template);
+			var output = compiled_template(data);
+			callback(null, output);
+		} catch (err) {
+			callback(err);
+		}
+	});
+
+	stream.on('error', function (err) {
+		callback(err);
+	});
+});

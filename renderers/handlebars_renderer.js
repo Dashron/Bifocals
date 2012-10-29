@@ -1,6 +1,5 @@
 "use strict";
 
-var http_module = require('http');
 var util_module = require('util');
 var fs_module = require('fs');
 var handlebars = require('handlebars');
@@ -29,11 +28,6 @@ var compiled_views = {};
  */
 HandlebarsRenderer.prototype.render = function (template) {
 	var _self = this;
-
-	if (this.response instanceof http_module.ServerResponse) {
-		this.response.setHeader('Content-Type', 'text/html');
-		this.response.status_code = 200;
-	}
 
 	if (typeof compiled_views[template] === "undefined" || compiled_views[template] === null) {
 		var stream = fs_module.createReadStream(template);

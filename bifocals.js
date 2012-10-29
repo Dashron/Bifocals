@@ -13,6 +13,7 @@ var _renderers = {};
 
 /**
  * Registers a renderer object to a content type
+ * 
  * @param {string} content_type The content type (or mime type) of the request
  * @param {Renderer} renderer     The renderer object that will handle view data
  */
@@ -22,6 +23,7 @@ exports.addRenderer = function addRenderer(content_type, renderer) {
 
 /**
  * Returns a renderer for a content type
+ * 
  * @param  {string} content_type The content type (or mime type) of the request
  * @return {Renderer}              The renderer associated with the content type
  * @throws {Error} If a renderer has not been added to the content_type
@@ -63,8 +65,7 @@ var render_states = exports.RENDER_STATES = {
  * 
  * 
  * //Create the parent:
- * var view = new Bifocals("templates/index.html");
- * view.response = response;
+ * var view = new Bifocals(response);
  * 
  * //Create the child:
  * var child = template.child("header", "templates/header.html");
@@ -77,7 +78,7 @@ var render_states = exports.RENDER_STATES = {
  * 
  * @author Aaron Hedges <aaron@dashron.com>
  */
-var Bifocals = exports.Bifocals = function Bifocals() {
+var Bifocals = exports.Bifocals = function Bifocals(response) {
 	EventEmitter.call(this);
 
 	this._child_views = {};
@@ -86,23 +87,15 @@ var Bifocals = exports.Bifocals = function Bifocals() {
 	this.render_state = render_states.RENDER_NOT_CALLED;
 	this.parent = null;
 	this.root = this;
+	this._response = response;
+	this._response.status_code = 200;
 };
 
 util_module.inherits(Bifocals, EventEmitter);
 
 Bifocals.prototype._data = null;
 Bifocals.prototype._child_views = null;
-
-/**
- * The response object that the renderer will write to
- * Changing this will alter how render is performed.
- * It is not recommended to change this on child views, only parent views.
- * Child views use an object with some functions matching ServerResponse, but it is not a ServerResponse.
- * Only the root element should have a ServerResponse
- * 
- * @type {ServerResponse|Object}
- */
-Bifocals.prototype.response = null;
+Bifocals.prototype._response = null;
 
 /**
  * Error handler, any time an error occurs it will be provided to this function. Can be overridden via Bifocals.error(fn);
@@ -237,21 +230,43 @@ Bifocals.prototype.canRender = function bifocals_canRender() {
  * @param {Boolean} force Kills all child elements and forces the template to be rendered immediately. default: false
  */
 Bifocals.prototype.render = function bifocals_render(template, force) {
+	var _self = this;
 	if (!force) {
 		// If rendering has been canceled before we try to render, do nothing
-		if (this.render_state === render_states.RENDER_CANCELED) {
+		if (_self.render_state === render_states.RENDER_CANCELED) {
 			return;
 		}
 
-		this.render_state = render_states.RENDER_REQUESTED;
+		_self.render_state = render_states.RENDER_REQUESTED;
 
-		if (this.canRender()) {
-			this.render_state = render_states.RENDER_STARTED;
+		if (_self.canRender()) {
+			_self.render_state = render_states.RENDER_STARTED;
 			// We want to prefer the pre-set template over the render(template)
-			if (this.template) {
-				template = this.template;
+			if (_self.template) {
+				template = _self.template;
 			}
-			this.buildRenderer().render(this.dir + template);
+
+			var renderer = exports.getRenderer(_self.content_type);
+
+			// todo: Try to move away from super. How do you identify a constructor?
+			if (renderer.super_ === exports.Renderer) {
+				this.buildRenderer(renderer).render(this.dir + template);
+			} else {
+				// express js compatible format
+				renderer(_self.dir + template, _self._data, function (err, output) {
+					if (err) {
+						_self.render_state = render_states.RENDER_FAILED;
+						return _self._error(err);
+					} else {
+						_self.render_state = render_states.RENDER_COMPLETE;
+						if (_self._response.setHeader) {
+							_self._response.setHeader('Content-Type', _self.content_type);
+						}
+						_self._response.write(output);
+						_self._response.end();
+					}
+				});
+			}
 		} else {
 			// If a template has not yet been assigned to this view, and we can not immediately render it
 			// we need to set the provided template, so it is rendered in the future
@@ -285,12 +300,12 @@ Bifocals.prototype.cancelRender = function bifocals_cancelRender() {
  * 
  * @return {Renderer}
  */
-Bifocals.prototype.buildRenderer = function bifocals_buildRenderer() {
+Bifocals.prototype.buildRenderer = function bifocals_buildRenderer(RendererConstructor) {
 	var _self = this;
 
-	var renderer = new (exports.getRenderer(this.content_type))();
+	var renderer = new RendererConstructor();
 	renderer.data = this._data;
-	renderer.response = this.response;
+	renderer.response = this._response;
 	renderer.error(function (error) {
 		_self.render_state = render_states.RENDER_FAILED;
 		_self._error(error);
@@ -321,19 +336,8 @@ Bifocals.prototype.error = function bifocals_error(fn) {
  * @returns {Bifocals}
  */
 Bifocals.prototype.child = function bifocals_child(key, template) {
-	var new_view = new Bifocals();
-	new_view.content_type = this.content_type;
-	new_view.parent = this;
-	new_view.root = this.root;
-	new_view.dir = this.dir;
-	new_view.error(this._error);
-	
-	if (template) {
-		new_view.template = template;
-	}
-
 	// Makes a fake response that writes to the parent instead of to an actual response object
-	new_view.response = {
+	var new_view = new Bifocals({
 		buffer: '',
 		write: function (chunk) {
 			this.buffer += chunk; 
@@ -352,7 +356,17 @@ Bifocals.prototype.child = function bifocals_child(key, template) {
 				});
 			}
 		}
-	 };
+	});
+
+	new_view.content_type = this.content_type;
+	new_view.parent = this;
+	new_view.root = this.root;
+	new_view.dir = this.dir;
+	new_view.error(this._error);
+	
+	if (template) {
+		new_view.template = template;
+	}
 
 	this._child_views[key] = new_view;
 
@@ -366,7 +380,7 @@ Bifocals.prototype.child = function bifocals_child(key, template) {
  * @return {Bifocals} this, used for chaining
  */
 Bifocals.prototype.setStatusCode = function bifocals_setStatusCode(code) {
-	this.root.response.statusCode = code;
+	this.root._response.statusCode = code;
 	return this;
 };
 
@@ -379,7 +393,7 @@ Bifocals.prototype.setStatusCode = function bifocals_setStatusCode(code) {
 Bifocals.prototype.setHeaders = function bifocals_setHeaders(headers) {
 	var key = null;
 	for(key in headers) {
-		this.root.response.setHeader(key, headers[key]);
+		this.root._response.setHeader(key, headers[key]);
 	}
 	return this;
 };
@@ -395,7 +409,7 @@ Bifocals.prototype.statusNotFound = function bifocals_statusNotFound(template) {
 	
 	if (typeof template !== "string") {
 		this.root.cancelRender();
-		this.root.response.end();
+		this.root._response.end();
 	} else {
 		this.root.render(template, true);
 	}
@@ -413,7 +427,7 @@ Bifocals.prototype.statusError = function bifocals_statusError(error, template) 
 
 	if (typeof template !== "string") {
 		this.root.cancelRender();
-		this.root.response.end();
+		this.root._response.end();
 	} else {
 		this.root.render(template, true);
 	}
@@ -440,7 +454,7 @@ Bifocals.prototype.statusCreated = function bifocals_statusCreated(redirect_url)
 		Location : redirect_url
 	});
 	this.root.cancelRender();
-	this.root.response.end();
+	this.root._response.end();
 };
 
 /**
@@ -456,7 +470,7 @@ Bifocals.prototype.statusRedirect = function bifocals_statusRedirect(redirect_ur
 		Location : redirect_url
 	});
 	this.root.cancelRender();
-	this.root.response.end();
+	this.root._response.end();
 };
 
 /**
@@ -472,7 +486,7 @@ Bifocals.prototype.statusNotModified = function bifocals_statusNotModified() {
 	// etag
 	// expires
 	// cache  control
-	this.root.response.end();
+	this.root._response.end();
 };
 
 /**
@@ -489,7 +503,7 @@ Bifocals.prototype.statusUnsupportedMethod = function bifocals_statusUnsupported
 		Allow : supported_methods.join(',')
 	});
 	this.root.cancelRender();
-	this.root.response.end();
+	this.root._response.end();
 };
 
 Bifocals.prototype.statusUnauthorized = function bifocals_statusUnauthorized(template)
@@ -498,7 +512,7 @@ Bifocals.prototype.statusUnauthorized = function bifocals_statusUnauthorized(tem
 	this.root.cancelRender();
 	if (typeof template !== "string") {
 		this.root.cancelRender();
-		this.root.response.end();
+		this.root._response.end();
 	} else {
 		this.root.render(template, true);
 	}

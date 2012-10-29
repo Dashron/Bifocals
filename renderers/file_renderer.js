@@ -2,7 +2,6 @@
 
 var fs_module = require('fs');
 var util_module = require('util');
-var http_module = require('http');
 var Renderer = require('../bifocals').Renderer;
 
 // flat file renderer
@@ -14,11 +13,6 @@ util_module.inherits(FileRenderer, Renderer);
 
 FileRenderer.prototype.render = function (template) {
 	var _self = this;
-
-	if (this.response instanceof http_module.ServerResponse) {
-		this.response.setHeader('Content-Type', 'text/plain');
-		this.response.status_code = 200;
-	}
 
 	var stream = fs_module.createReadStream(template);
 	stream.on('data', function (data) {
