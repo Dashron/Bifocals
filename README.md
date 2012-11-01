@@ -7,6 +7,12 @@ See http://bifocalsjs.com for more documentation.
 
 ----
 
+### News:
+
+# Version 1.1.0 - Express Support
+
+I have added an express middleware component, look at example/express-server.js
+
 ### Installation:
 
 `npm install bifocals`

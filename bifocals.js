@@ -96,6 +96,7 @@ util_module.inherits(Bifocals, EventEmitter);
 Bifocals.prototype._data = null;
 Bifocals.prototype._child_views = null;
 Bifocals.prototype._response = null;
+Bifocals.prototype._end = function bifocals_defaultEnd(end) {};
 
 /**
  * Error handler, any time an error occurs it will be provided to this function. Can be overridden via Bifocals.error(fn);
@@ -264,6 +265,7 @@ Bifocals.prototype.render = function bifocals_render(template, force) {
 						}
 						_self._response.write(output);
 						_self._response.end();
+						_self._end();
 					}
 				});
 			}
@@ -311,6 +313,7 @@ Bifocals.prototype.buildRenderer = function bifocals_buildRenderer(RendererConst
 		_self._error(error);
 	}).end(function () {
 		_self.render_state = render_states.RENDER_COMPLETE;
+		_self._end();
 	});
 	return renderer;
 };
@@ -327,6 +330,16 @@ Bifocals.prototype.error = function bifocals_error(fn) {
 	return this;
 };
 
+/**
+ * Sets an end handler which will be called when the view is done rendering
+ * 
+ * @param  {Function} fn takes no parameters
+ * @return {[type]}      this, used for chaining
+ */
+Bifocals.prototype.end = function bifocals_end(fn) {
+	this._end = fn;
+	return this;
+};
 
 /**
  * Create a child view relative to this view
@@ -565,3 +578,54 @@ Renderer.prototype.end = function renderer_end(fn) {
 	this._end = fn;
 	return this;
 };
+
+
+/**
+ * Express middleware.
+ * 
+ * var bifocals_module = require('bifocals');
+ * 
+ * app.use(bifocals_module.__express({
+ *	app : app
+ * }));
+ *
+ * 
+ * 
+ * @param  {[type]} options [description]
+ * @return {[type]}         [description]
+ */
+module.exports.__express = function (options) {
+	var app = options.app;
+
+	return function (req, res, next) {
+		var root = new Bifocals(res);
+		root.dir = app.get('views') + '/';
+		root.content_type = 'text/html';
+
+		res.child = function (key, template) {
+			return root.child(key, template);
+		};
+
+		res.render = function (name, opts, fn) {
+			if (typeof opts === "object") {
+				Object.keys(opts).forEach(function (value, key) {
+					root.set(key, value);
+				});
+			}
+
+			if (typeof fn === "function") {
+				root.error(function (err) {
+					fn(err);
+				});
+
+				root.end(function() {
+					fn(null);
+				});
+			}
+
+			root.render(name);
+		};
+
+		next();
+	}
+}
