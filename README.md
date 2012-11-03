@@ -13,6 +13,8 @@ See http://bifocalsjs.com for more documentation.
 
 I have added an express middleware component, look at example/express-server.js
 
+NOTE: There has been an API change. You no longer manually assign the response to the view. The response is passed via the constructor
+
 ### Installation:
 
 `npm install bifocals`
