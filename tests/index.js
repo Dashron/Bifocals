@@ -11,14 +11,7 @@ var Renderer = bifocals_module.Renderer;
 vows.describe('View Component').addBatch({
 	'An html view': {
 		topic: function () {
-			var view = new View();
-			var _topic = this;
-			view.content_type = 'text/html';
-			view.dir = path_module.normalize(__dirname + '/../testing_resources/');
-			view.error(function (error) {
-				throw error;
-			});
-			view.response = {
+			var view = new View({
 				buffer : '',
 				write : function (chunk) {
 					this.buffer += chunk;
@@ -26,7 +19,14 @@ vows.describe('View Component').addBatch({
 				end : function () {
 					_topic.callback(null, {view: view, buffer: this.buffer});
 				}
-			};
+			});
+
+			var _topic = this;
+			view.content_type = 'text/html';
+			view.dir = path_module.normalize(__dirname + '/../testing_resources/');
+			view.error(function (error) {
+				throw error;
+			});
 
 			view.render('view_example.html');
 		},
@@ -40,15 +40,7 @@ vows.describe('View Component').addBatch({
 	'An html view with data' : {
 		topic: function () {
 			var _topic = this;
-			var view = new View();
-			view.content_type = 'text/html';
-			view.dir = __dirname.replace('/components', '/testing_resources') + '/';
-			view.error(function (error) {
-				throw error;
-			});
-			view.set('status', 'single view');
-
-			view.response = {
+			var view = new View({
 				buffer : '',
 				write : function (chunk) {
 					this.buffer += chunk;
@@ -56,7 +48,14 @@ vows.describe('View Component').addBatch({
 				end : function () {
 					_topic.callback(null, {view: view, buffer: this.buffer});
 				}
-			};
+			});
+
+			view.content_type = 'text/html';
+			view.dir = __dirname.replace('/components', '/testing_resources') + '/';
+			view.error(function (error) {
+				throw error;
+			});
+			view.set('status', 'single view');
 			view.render('view_example.html');
 		},
 		'renders correctly' : function (view) {
@@ -69,7 +68,16 @@ vows.describe('View Component').addBatch({
 	'An html view with children rendered first' : {
 		topic: function () {
 			var _topic = this;
-			var view = new View();
+			var view = new View({
+				buffer : '',
+				write : function (chunk) {
+					this.buffer += chunk;
+				},
+				end : function () {
+					_topic.callback(null, {view: view, buffer: this.buffer});
+				}
+			});
+
 			view.content_type = 'text/html';
 			view.dir = __dirname.replace('/components', '/testing_resources') + '/';
 			view.error(function (error) {
@@ -78,17 +86,6 @@ vows.describe('View Component').addBatch({
 			var child = view.child('status');
 			child.set('status', 'child');
 			child.render('view_example.html');
-
-			view.response = {
-				buffer : '',
-				write : function (chunk) {
-					this.buffer += chunk;
-				},
-				end : function () {
-					_topic.callback(null, {view: view, buffer: this.buffer});
-				}
-			};
-
 			view.render('view_example.html');
 		},
 		'renders correctly' : function (view) {
@@ -100,7 +97,16 @@ vows.describe('View Component').addBatch({
 	},
 	'An html view with children rendered last' : {
 		topic: function () {
-			var view = new View();
+			var view = new View({
+				buffer : '',
+				write : function (chunk) {
+					this.buffer += chunk;
+				},
+				end : function () {
+					_topic.callback(null, {view: view, buffer: this.buffer});
+				}
+			});
+
 			var _topic = this;
 			view.content_type = 'text/html';
 			view.dir = __dirname.replace('/components', '/testing_resources') + '/';
@@ -110,17 +116,6 @@ vows.describe('View Component').addBatch({
 			var child = view.child('status');
 			
 			view.render('view_example.html');
-
-			view.response = {
-				buffer : '',
-				write : function (chunk) {
-					this.buffer += chunk;
-				},
-				end : function () {
-					_topic.callback(null, {view: view, buffer: this.buffer});
-				}
-			};
-
 			child.set('status', 'child');
 			child.render('view_example.html');
 		},
