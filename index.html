@@ -46,6 +46,7 @@
 <li><a href="#why-do-i-need-this-library">Why do I need this library?</a></li>
 <li><a href="#interactive-example">Interactive Example</a></li>
 <li><a href="#more-examples">More Examples</a></li>
+<li><a href="#express-middleware">Express Middleware</a></li>
 <li><a href="#important-notes">Important notes</a></li>
 </ul>
 </li>
@@ -237,6 +238,32 @@ If you access <a href="http://localhost:8125/static">localhost:8125/static</a> y
 If you access <a href="http://localhost:8125/unauth">localhost:8125/unauth</a> you will receive a 401 Unauthorized status code, and the output of a template.<br /><br />
 
 If you access any other path, such as <a href="http://localhost:8125/fakefakefake">localhost:8125/fakefakefake</a>, it should send a proper 404 error code.
+
+<h3 id="express-middleware">Express Middleware</h3>
+Included in the examples directory is a technique for using Bifocals as your method for rendering templates in express. <br /><br />
+
+First you need to configure your app with a views directory.
+<br /><br />
+<pre><code>app.set('views', __dirname + '/templates');</pre></code>
+
+Second you need to configure bifocals with a text/html renderer. You can use the same rendering function you would for express. The following example uses the consolidate library, which was built so express could use any template system.
+<br /><br />
+<pre><code>bifocals_module.addRenderer('text/html', require('consolidate').handlebars);</code></pre>
+
+Third, you need to tell your app to use the middleware.
+<br /><br />
+<pre><code>app.use(bifocals_module.__express({
+        app : app
+    }));</code></pre>
+
+Once configured, a Bifocals object is created for each request. The response object provided to each route is modified in two ways to accomidate this.<br /><br />
+
+First, render is rewritten to use that core bifocals object. The parameters of this function have not changed.
+Second, a child method has been added to the response object. It is identical to Bifocals' <code><a href="#function-child">Child</a></code> function.<br /><br />
+
+With these two functions, you should be able to use all of the features of bifocals from within express. If you need more, email me at <a href="mailto:aaron@dashron.com">aaron@dashron.com</a> and we can discuss how to create a better integration.<br /><br />
+
+For an example, check out <a href="https://github.com/Dashron/Bifocals/blob/master/example/express-server.js">express-server.js</a>.
 
 <h3 id="important-notes">Important notes</h3>
 
@@ -431,7 +458,7 @@ If you want to use child views, they must be created before this render call, bu
 
 <p>Assigns an error handler to this view. Child elements will inherit this error handler. The callback will be provided one parameter: the error.</p>
 
-<h5>child(key, template)</h5>
+<h5 id="function-child">child(key, template)</h5>
 
 <p><code>key</code> : string</p>
 
