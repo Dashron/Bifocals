@@ -98,8 +98,7 @@ bifocals_module.addRenderer('text/html', require('./renderers/handlebars_rendere
 
 http_module.createServer(function (request, response) {
     // Create the parent:
-    var view = new Bifocals();
-    view.response = response;
+    var view = new Bifocals(response);
 
     // Assign a content type.
     view.content_type = 'text/html';
@@ -132,8 +131,7 @@ http_module.createServer(function (request, response) {
 
 <pre><code>http_module.createServer(function (request, response) {
     // Create the parent:
-    var view = new Bifocals();
-    view.response = response;
+    var view = new Bifocals(response);
 
     // Assign a content type.
     view.content_type = 'text/html';
@@ -349,17 +347,18 @@ util_module.inherits(FileRenderer, Renderer);
 
 <p>// todo : provide explicit definitions of each state</p>
 
-<h5>Bifocals()</h5>
+<h5>Bifocals(response)</h5>
 
-<p>Constructor for the bifocal object.
-This should only be called for a root view, any child views should be spawned off the root.</p>
+<p><code>response</code> : http response object</p>
 
-<p>Your first task should be to assign the response object.
-Your second task should be to assign an error handler.
+<p>Constructor for the bifocal object. This should only be called for a root view, any child views should be spawned off the root via <a href="#function-child">child</a>.</p>
+
+<p>When the render method is called, it will write out to the response object provided to this consstructor.</p>
+
+<p>Your first task should be to assign an error handler.
 Be careful with the error handler. If <code>statusError</code> handles all failed templates and then fails, you will become locked in an infinite loop.</p>
 
-<pre><code>var view = new Bifocals();
-view.response = response;
+<pre><code>var view = new Bifocals(response);
 view.error(function (error) {
     console.log(error);
     view.statusError(error);
@@ -367,12 +366,6 @@ view.error(function (error) {
 
 <h4 id="bifocals-reference">Bifocals Reference</h4>
 <hr>
-<h5>response</h5>
-
-<p>The object that the final rendered output will be written to.</p>
-
-<p>Changing this will change the destination of the final rendered output.
-It is not recommended to change this on child views, as they use different response objects than normal. Generally only a root view would store an actual <code>ServerResponse</code>.</p>
 
 <h5>content_type</h5>
 
