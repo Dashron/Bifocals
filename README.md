@@ -47,8 +47,7 @@ server.js
 
     http_module.createServer(function (request, response) {
     	// Create the parent:
-        var view = new Bifocals();
-        view.response = response;
+        var view = new Bifocals(response);
 
         // Assign a content type.
         view.content_type = 'text/html';
@@ -79,8 +78,7 @@ The previous example does not show the true benefits of the library. These benef
 
     http_module.createServer(function (request, response) {
     	// Create the parent:
-        var view = new Bifocals();
-        view.response = response;
+        var view = new Bifocals(response);
 
         // Assign a content type.
         view.content_type = 'text/html';
