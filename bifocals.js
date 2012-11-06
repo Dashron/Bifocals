@@ -7,7 +7,6 @@
 
 var EventEmitter = require('events').EventEmitter;
 var util_module = require('util');
-var http_module = require('http');
 
 var _renderers = {};
 
