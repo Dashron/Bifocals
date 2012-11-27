@@ -132,5 +132,5 @@ The previous example does not show the true benefits of the library. These benef
 * You must create all children before you tell the parent to render, otherwise the output template could be incomplete.
 
 ### Thanks to...
-@chanian for cleaning up my typos, and for sparking ideas about the future of this project
-@jasonmoo for helping identify confusing sections in the documentation
+* @chanian for cleaning up my typos, and for sparking ideas about the future of this project
+* @jasonmoo for helping identify confusing sections in the documentation
