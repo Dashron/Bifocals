@@ -156,6 +156,13 @@ Bifocals.prototype.root = null;
 Bifocals.prototype.render_state = null;
 
 /**
+ * Default template to use when rendering 500 errors
+ * 
+ * @type {String}
+ */
+Bifocals.prototype.default500Template = null;
+
+/**
  * returns whether the view has finished rendering or not
  * 
  * @returns {Boolean}
@@ -437,11 +444,13 @@ Bifocals.prototype.statusError = function bifocals_statusError(error, template) 
 	this.setStatusCode(500);
 	this.root.set('error', error);
 
-	if (typeof template !== "string") {
+	if (typeof template === "string") {
+		this.root.render(template, true);
+	} else if (typeof this.root.default500Template === "string") {
+		this.root.render(this.root.default500Template, true);
+	} else {
 		this.root.cancelRender();
 		this.root._response.end();
-	} else {
-		this.root.render(template, true);
 	}
 };
 
