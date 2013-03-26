@@ -129,7 +129,7 @@ Bifocals.prototype.template = null;
  * 
  * @type {String}
  */
-Bifocals.prototype.dir = null;
+Bifocals.prototype.dir = '';
 
 /**
  * The Bifocal view that created this view as a child.
