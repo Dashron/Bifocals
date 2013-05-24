@@ -257,7 +257,11 @@ Bifocals.prototype.render = function bifocals_render(template, force) {
 
 			// todo: Try to move away from super. How do you identify a constructor?
 			if (renderer.super_ === exports.Renderer) {
-				this.buildRenderer(renderer).render(this.dir + template);
+				if (template[0] !== '/') {
+					template = this.dir + template;
+				}
+				
+				this.buildRenderer(renderer).render(template);
 			} else {
 				// express js compatible format
 				renderer(_self.dir + template, _self._data, function (err, output) {
