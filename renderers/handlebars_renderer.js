@@ -3,7 +3,7 @@
 var util_module = require('util');
 var fs_module = require('fs');
 var handlebars = require('handlebars');
-var Renderer = require('../bifocals').Renderer;
+var Renderer = require('../lib/renderer');
 
 /**
  * Renders a view as html via the Mu2 module
@@ -33,8 +33,8 @@ HandlebarsRenderer.prototype.render = function (template) {
 		var stream = fs_module.createReadStream(template);
 
 		var buffer = '';
-		stream.on('data', function (chunk) {
-			buffer += chunk;
+		stream.on('readable', function () {
+			buffer += stream.read();
 		});
 
 		stream.on('end', function () {

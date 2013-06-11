@@ -9,6 +9,11 @@ See http://bifocalsjs.com for more documentation.
 
 ### News:
 
+# Version 1.2.0 - Major Refactor
+
+There have been no api changes, but Bifocals as of 1.2.0 requires Node 0.10.0 or higher. I have switched to using the new streams.
+Additionally I have moved code around, and cleaned up some methods.
+
 # Version 1.1.0 - Express Support
 
 I have added an express middleware component, look at example/express-server.js

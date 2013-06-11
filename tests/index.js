@@ -4,7 +4,7 @@ var assert = require('assert');
 var path_module = require('path');
 var util_module = require('util');
 
-var bifocals_module = require('../bifocals');
+var bifocals_module = require('../index');
 var View = bifocals_module.Bifocals;
 var Renderer = bifocals_module.Renderer;
 

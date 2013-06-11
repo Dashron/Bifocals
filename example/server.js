@@ -1,7 +1,7 @@
 "use strict";
 
 var http_module = require('http');
-var bifocals_module = require('../bifocals');
+var bifocals_module = require('../index');
 var handlebars_module = require('handlebars');
 var fs_module = require('fs');
 
@@ -79,8 +79,8 @@ bifocals_module.addRenderer('text/html', function (path, data, callback) {
 	var stream = fs_module.createReadStream(path);
 
 	var template = '';
-	stream.on('data', function (chunk) {
-		template += chunk;
+	stream.on('readable', function () {
+		template += stream.read();
 	});
 
 	stream.on('end', function () {

@@ -2,7 +2,7 @@
 
 var fs_module = require('fs');
 var util_module = require('util');
-var Renderer = require('../bifocals').Renderer;
+var Renderer = require('../lib/renderer');
 
 // flat file renderer
 var FileRenderer = module.exports = function FileRenderer() {
@@ -15,8 +15,9 @@ FileRenderer.prototype.render = function (template) {
 	var _self = this;
 
 	var stream = fs_module.createReadStream(template);
-	stream.on('data', function (data) {
-		_self.response.write(data);
+	
+	stream.on('readable', function () {
+		_self.response.write(stream.read());
 	});
 
 	stream.on('error', function (err) {
