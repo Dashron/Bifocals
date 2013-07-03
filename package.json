@@ -1,6 +1,6 @@
 {
   "name": "bifocals",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "author": {
     "name": "Aaron Hedges",
     "email": "aaron@dashron.com",
@@ -12,7 +12,7 @@
     "asynchronous",
     "subview"
   ],
-  "homepage": "http://github.com/Dashron/bifocals",
+  "homepage": "http://bifocalsjs.com",
   "bugs": {
     "url": "http://github.com/Dashron/bifocals/issues",
     "email": "aaron@dashron.com"
