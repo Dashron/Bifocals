@@ -28,10 +28,10 @@ vows.describe('View Component').addBatch({
 				throw error;
 			});
 
-			view.render('view_example.html');
+			view.render('view_example');
 		},
 		'renders correctly': function (view) {
-			assert.equal(view.buffer, "view_example.html {}");
+			assert.equal(view.buffer, "view_example {}");
 		},
 		'is complete' : function (view) {
 			assert.equal(view.view.render_state, bifocals_module.RENDER_STATES.RENDER_COMPLETE);
@@ -56,10 +56,10 @@ vows.describe('View Component').addBatch({
 				throw error;
 			});
 			view.set('status', 'single view');
-			view.render('view_example.html');
+			view.render('view_example');
 		},
 		'renders correctly' : function (view) {
-			assert.equal(view.buffer, "view_example.html {single view,}");
+			assert.equal(view.buffer, "view_example {single view,}");
 		},
 		'is complete' : function (view) {
 			assert.equal(view.view.render_state, bifocals_module.RENDER_STATES.RENDER_COMPLETE);
@@ -85,11 +85,11 @@ vows.describe('View Component').addBatch({
 			});
 			var child = view.child('status');
 			child.set('status', 'child');
-			child.render('view_example.html');
-			view.render('view_example.html');
+			child.render('view_example');
+			view.render('view_example');
 		},
 		'renders correctly' : function (view) {
-			assert.equal(view.buffer, "view_example.html {view_example.html {child,},}");
+			assert.equal(view.buffer, "view_example {view_example {child,},}");
 		},
 		'is complete' : function (view) {
 			assert.equal(view.view.render_state, bifocals_module.RENDER_STATES.RENDER_COMPLETE);
@@ -115,12 +115,12 @@ vows.describe('View Component').addBatch({
 			});
 			var child = view.child('status');
 			
-			view.render('view_example.html');
+			view.render('view_example');
 			child.set('status', 'child');
-			child.render('view_example.html');
+			child.render('view_example');
 		},
 		'renders correctly' : function (view) {
-			assert.equal(view.buffer, "view_example.html {view_example.html {child,},}");
+			assert.equal(view.buffer, "view_example {view_example {child,},}");
 		},
 		'is complete' : function (view) {
 			assert.equal(view.view.render_state, bifocals_module.RENDER_STATES.RENDER_COMPLETE);

@@ -2,7 +2,7 @@
 
 var express = require('express');
 var app = express();
-var bifocals_module = require('../bifocals');
+var bifocals_module = require('../index');
 var Bifocals = bifocals_module.Bifocals;
 
 app.configure(function(){
@@ -21,17 +21,17 @@ app.get('/', function (req, res) {
 	};
 
 	var first_child = res.child('first_child');
-	first_child.render('sub1.html');
+	first_child.render('sub1');
 
-	var second_child = res.child('second_child', 'sub2.html');
-	second_child.render('sub1.html');
+	var second_child = res.child('second_child', 'sub2');
+	second_child.render('sub1');
 
 	var third_child = res.child('third_child');
 	process.nextTick(function () {
-		third_child.render('sub3.html');
+		third_child.render('sub3');
 	});
 
-	res.render('index.html', data, function (err) {
+	res.render('index', data, function (err) {
 		if (err) {
 			throw err;
 		} else {
