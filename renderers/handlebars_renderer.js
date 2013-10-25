@@ -43,7 +43,7 @@ HandlebarsRenderer.prototype.render = function (template) {
 		});
 
 		stream.on('error', function (err) {
-			_self._error(err);
+			_self._error(err, template);
 		});
 	} else {
 		process.nextTick(function () {
@@ -61,7 +61,7 @@ HandlebarsRenderer.prototype.executeTemplate = function (template) {
 	try {
 		this.response.write(compiled_views[template](this.data));
 	} catch (error) {
-		this._error(error);
+		this._error(error, template);
 	}
 	this._end();
 	this.response.end();

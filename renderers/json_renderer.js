@@ -33,18 +33,24 @@ JsonRenderer.prototype.render = function (template) {
 	}
 
 	try {
-		var fn = require(template + '.js');
+		var fn = this.template(template + '.js');
 		var object = fn(this.data);
 		if (this.response instanceof http_module.ServerResponse) {
 			object = JSON.stringify(object);
 		}
-		// The flaw here is that we don't want to decode, then reencode child data.
-		// We need a way to set back non-string data to the parent. Right now it is all stringified
-		// because we start with a buffer of '' and append to the buffer as data comes in. 
+		
 		this.response.write(object);
 	} catch (error) {
-		this._error(error);
+		this._error(error, template);
 	}
 	this._end();
 	this.response.end();
+};
+
+JsonRenderer.prototype.template = function (template) {
+	if (template[0] !== '/') {
+		template = this.dir + template;
+	}
+				
+	return require(template + '.js');
 };
