@@ -9,6 +9,10 @@ See http://bifocalsjs.com for more documentation.
 
 ### News:
 
+# Version 1.3.0 - Improved default templates
+
+Bifocals now has a simpler way of setting default status templates. view.setDefaultTemplate(status_code, full_path); 401, 404 and 500 are currently supported.
+
 # Version 1.2.0 - Major Refactor
 
 There have been no api changes, but Bifocals as of 1.2.0 requires Node 0.10.0 or higher. I have switched to using the new streams.
