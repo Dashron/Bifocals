@@ -1,3 +1,9 @@
+## Note: I no longer maintain this project.
+1. When developed, promises were not yet mature. Now that they are, the entire project should be redesigned from the ground up with promises.
+2. The string building and http response handling are too tightly coupled. All http details should be pulled out of this class.
+3. This current implementation puts too much view information into the controller (each sub-view has to be explicitly defined). I always wished this could offload more data into the view, and one thought was to inject callbacks into each view so that it knew how it would be re-rendered. At that point the library would be fairly similar to React. In the future I may re-address this with that use case in mind.
+
+
 # Bifocals
 ==========
 
